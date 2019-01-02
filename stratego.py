@@ -11,7 +11,7 @@ line8=[8,'-','-','-','-','-','-','-','-','-','-']
 line9=[9,'-','-','-','-','-','-','-','-','-','-']
 line10=[10,'-','-','-','-','-','-','-','-','-','-']
 lines=[line1,line2,line3,line4,line5,line6,line7,line8,line9,line10]
-
+move='-'
 class piece():
     '''generic class for all pieces'''
     def __init__(self,name,strength,speed,line,spot,player):
@@ -26,23 +26,22 @@ class piece():
         if self.strength>=enemy.strength:
           print('you won')
           for i in lines:
-            if (self.line+1)==i[0]:
-              i[self.spot]=self.name
-              n=i[0]-1
-              for x in lines:
-                if x[0]==n:
-                  x[self.spot]='-'
+              if (enemy.line-1)==i[0]:
+                  i[enemy.spot]='-'
+                  self.move(direc)
         if self.strength<enemy.strength:
-          print('you lost')
-          for i in lines:
-            if (enemy.line+1)==i[0]:
-              i[enemy.spot]=enemy.name
-              n=i[0]-1
-              for x in lines:
-                if x[0]==n:
-                  x[enemy.spot]='-'
-    def move(self):
-        move=input('move')
+            print('you lost')
+            for i in lines:
+                if (self.line)==i[0]:
+                    i[self.spot]='-'
+
+
+
+    def move(self,move=''):
+        global direc
+        if move=='':
+            direc=input('move')
+            move=direc
         if move=='s':
             for i in lines:
                 if (self.line+1)==i[0]:
@@ -95,7 +94,7 @@ class piece():
                         print('that is a lake')
                         self.move()
                     else:
-                        print('That i an enemy')
+                        print('That is an enemy')
                         for x in pieces:
                             n=self.spot-1
                             if x.line==self.line and x.spot==n:
@@ -112,7 +111,7 @@ class piece():
                         print('that is a lake')
                         self.move()
                     else:
-                        print('That i an enemy')
+                        print('That is an enemy')
                         for x in pieces:
                             n=self.spot+1
                             if x.line==self.line and x.spot==n:
