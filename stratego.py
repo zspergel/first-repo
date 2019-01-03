@@ -24,11 +24,14 @@ class piece():
     def attack(self,enemy):
         print('hi')
         if self.strength>=enemy.strength:
-          print('you won')
-          for i in lines:
-              if (enemy.line-1)==i[0]:
-                  i[enemy.spot]='-'
-                  self.move(direc)
+            if enemy.name=='flag':
+                print('you captured the flag and won the game')
+                return
+            print('you won')
+            for i in lines:
+                if (enemy.line-1)==i[0]:
+                    i[enemy.spot]='-'
+                    self.move(direc)
         if self.strength<enemy.strength:
             print('you lost')
             for i in lines:
@@ -39,6 +42,12 @@ class piece():
 
     def move(self,move=''):
         global direc
+        if self.name=='bomb':
+            print('bombs cant move')
+            return
+        if self.name=='flag':
+            print('the flag cant move')
+            return
         if move=='':
             direc=input('move')
             move=direc
@@ -178,16 +187,44 @@ class miner(piece):
                                 self.attack(x)
 class scout(piece):
     def __init__(self,name,strength,speed,line,spot,player):
-        piece__init__(self,name,strength,speed,line,spot,player)
+        piece.__init__(self,name,strength,speed,line,spot,player)
     def jump(self):
+        fail=0
         move=input('move')
+        if move=='w':
+            jumped=input('what spot do you want to jump to')
+            jumped=int(jumped)
+            for i in lines:
+                if i[0]==self.line:
+                    for z in range(jumped):
+                        if i[self.spot+z-jumped]!='-':
+                            print("you cant jump through pieces/lakes")
+                            fail+=1
+                    if fail==0:
+                        i[self.spot]='-'
+                        self.line-=jumped
+                        for x in lines:
+                            if self.line==x[0]:
+                                x[self.spot]=self.name
+                    else:
+                        self.jump()
         if move=='s':
             jumped=input('what spot do you want to jump to')
             jumped=int(jumped)
-            self.line-=jumped
-            #for i in lines:
-
-#class bomb(piece):
+            for i in lines:
+                if i[0]==self.line:
+                    for z in range(jumped):
+                        if i[self.spot-z+jumped]!='-':
+                            print("you cant jump through pieces/lakes")
+                            fail+=1
+                    if fail==0:
+                        i[self.spot]='-'
+                        self.line+=jumped
+                        for x in lines:
+                            if self.line==x[0]:
+                                x[self.spot]=self.name
+                    else:
+                        self.jump()
 
 #class flag(piece):
 '''begin piece def'''
@@ -215,11 +252,12 @@ miner2=miner('miner',3,1,0,0,1)
 miner3=miner('miner',3,1,0,0,1)
 miner4=miner('miner',3,1,0,0,1)
 miner5=miner('miner',3,1,0,0,1)
+scout1=scout('scout',2,1,0,0,1)
 '''end piece def'''
 pieces=[marshall,general,colonel1,colonel2,major1,major2,major3,captain1,captain2,captain3,captain4,lieutenant1,lieutenant2,lieutenant3,lieutenant4,sergeant1,sergeant2,sergeant3,sergeant4]
-pez=[marshall,general]
+pez=[scout1]
 
 board_create()
-marshall.move()
+scout1.jump()
 board()
 
