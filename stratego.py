@@ -22,18 +22,19 @@ class piece():
         self.spot=spot
         self.player=player
     def attack(self,enemy):
-        print('hi')
+        if enemy.name=='bomb' and self.name=='miner':
+            enemy.strength-=20
         if self.strength>=enemy.strength:
             if enemy.name=='flag':
                 print('you captured the flag and won the game')
                 return
-            print('you won')
+            print(f'You win. your {self.name} defeated a {enemy.name}')
             for i in lines:
                 if (enemy.line-1)==i[0]:
                     i[enemy.spot]='-'
                     self.move(direc)
         if self.strength<enemy.strength:
-            print('you lost')
+            print(f'you lost. Your {self.name} was defeated by a {enemy.name}')
             for i in lines:
                 if (self.line)==i[0]:
                     i[self.spot]='-'
@@ -157,38 +158,11 @@ def board_create():
 
 
 
-class miner(piece):
-    def __init__(self,name,strength,speed,line,spot,player):
-        piece.__init__(self,name,strength,speed,line,spot,player)
-    def defuse(self):
-        move=input('move')
-        if move=='s':
-            for i in lines:
-                if (self.line+1)==i[0]:
-                    if i[self.spot]=='-':
-                        print('no one is there')
-                        i[self.spot]=self.name
-                        n=i[0]-1
-                        for x in lines:
-                          if x[0]==n:
-                            x[self.spot]='-'
-                            self.line+=1
-                    elif i[self.spot]==0:
-                        print('that is the lake')
-                        self.move()
-                    else:
-                        if enemy.name=='bomb':
-                            print('you have defused the bomb')
-                            enemy.strength-=20
-                        n=i[0]-1
-                        print('That is an enemy')
-                        for x in pieces:
-                            if x.line==n and x.spot==self.spot:
-                                self.attack(x)
+
 class scout(piece):
     def __init__(self,name,strength,speed,line,spot,player):
         piece.__init__(self,name,strength,speed,line,spot,player)
-    def jump(self):
+    def move(self):
         fail=0
         move=input('move')
         if move=='w':
@@ -225,8 +199,18 @@ class scout(piece):
                                 x[self.spot]=self.name
                     else:
                         self.jump()
-
-#class flag(piece):
+def select_piece():
+    row=input('select a piece. Enter the row of the piece')
+    column=input('enter the column')
+    for i in lines:
+        if row==i[0]:
+            if i[column]=='-' or i[column]=='0':
+                print('that is not a piece')
+                select_piece()
+    for n in pieces:
+        if n.line==row and n.spot==column:
+            print(f'You have selected the {n.name} on {column},{row}')
+            n.move()
 '''begin piece def'''
 marshall=piece('marshall',10,1,0,0,1)
 general=piece('general',9,1,0,0,1)
@@ -247,17 +231,30 @@ sergeant1=piece('sergeant',4,1,0,0,1)
 sergeant2=piece('sergeant',4,1,0,0,1)
 sergeant3=piece('sergeant',4,1,0,0,1)
 sergeant4=piece('sergeant',4,1,0,0,1)
-miner1=miner('miner',3,1,0,0,1)
-miner2=miner('miner',3,1,0,0,1)
-miner3=miner('miner',3,1,0,0,1)
-miner4=miner('miner',3,1,0,0,1)
-miner5=miner('miner',3,1,0,0,1)
+miner1=piece('miner',3,1,0,0,1)
+miner2=piece('miner',3,1,0,0,1)
+miner3=piece('miner',3,1,0,0,1)
+miner4=piece('miner',3,1,0,0,1)
+miner5=piece('miner',3,1,0,0,1)
 scout1=scout('scout',2,1,0,0,1)
+scout2=scout('scout',2,1,0,0,1)
+scout3=scout('scout',2,1,0,0,1)
+scout4=scout('scout',2,1,0,0,1)
+scout5=scout('scout',2,1,0,0,1)
+scout6=scout('scout',2,1,0,0,1)
+scout7=scout('scout',2,1,0,0,1)
+scout8=scout('scout',2,1,0,0,1)
+bomb1=piece('bomb',20,1,0,0,1)
+bomb2=piece('bomb',20,1,0,0,1)
+bomb3=piece('bomb',20,1,0,0,1)
+bomb4=piece('bomb',20,1,0,0,1)
+bomb5=piece('bomb',20,1,0,0,1)
+flag=piece('flag',0,1,0,0,1)
 '''end piece def'''
-pieces=[marshall,general,colonel1,colonel2,major1,major2,major3,captain1,captain2,captain3,captain4,lieutenant1,lieutenant2,lieutenant3,lieutenant4,sergeant1,sergeant2,sergeant3,sergeant4]
+pieces=[marshall,general,colonel1,colonel2,major1,major2,major3,captain1,captain2,captain3,captain4,lieutenant1,lieutenant2,lieutenant3,lieutenant4,sergeant1,sergeant2,sergeant3,sergeant4,miner1,miner2,miner3,miner4,miner5,scout1,scout2,scout3,scout4,scuot5,scout6,scou7,scout8,bom1,bomb2,bomb3,bomb4,bomb5,flag]
 pez=[scout1]
 
 board_create()
-scout1.jump()
+select_piece()
 board()
 
