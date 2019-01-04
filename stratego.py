@@ -180,10 +180,7 @@ def turn_board():
                             else:
                                 linelist.append('X')
         print(linelist)
-    if playernum==1:
-        playernum=2
-    else:
-        playernum=1
+
 
 
 def board_create():
@@ -193,13 +190,14 @@ def board_create():
             i.select_loc()
             i.location()
             turn_board()
-        playernum+=1
+    playernum+=1
+    turn_board()
     if playernum==2:
         for i in pieces2:
             i.select_loc()
             i.location()
             turn_board()
-        playernum-=1
+    playernum-=1
 
 
 
@@ -339,13 +337,13 @@ xbomb4=piece('bomb',20,1,0,0,2)
 xbomb5=piece('bomb',20,1,0,0,2)
 xflag=piece('flag',0,1,0,0,2)
 xspy=piece('spy',1,1,0,0,2)
-pieces1=[marshall,general,colonel1,colonel2,major1,major2,major3,captain1,captain2,captain3,captain4,lieutenant1,lieutenant2,lieutenant3,lieutenant4,sergeant1,sergeant2,sergeant3,sergeant4,miner1,miner2,miner3,miner4,miner5,scout1,scout2,scout3,scout4,scout5,scout6,scout7,scout8,bomb1,bomb2,bomb3,bomb4,bomb5,flag,spy]
-pieces2=[xmarshall,xgeneral,xcolonel1,xcolonel2,xmajor1,xmajor2,xmajor3,xcaptain1,xcaptain2,xcaptain3,xcaptain4,xlieutenant1,xlieutenant2,xlieutenant3,xlieutenant4,xsergeant1,xsergeant2,xsergeant3,xsergeant4,xminer1,xminer2,xminer3,xminer4,xminer5,xscout1,xscout2,xscout3,xscout4,xscout5,xscout6,xscout7,xscout8,xbomb1,xbomb2,xbomb3,xbomb4,xbomb5,xflag,xspy]
+#pieces1=[marshall,general,colonel1,colonel2,major1,major2,major3,captain1,captain2,captain3,captain4,lieutenant1,lieutenant2,lieutenant3,lieutenant4,sergeant1,sergeant2,sergeant3,sergeant4,miner1,miner2,miner3,miner4,miner5,scout1,scout2,scout3,scout4,scout5,scout6,scout7,scout8,bomb1,bomb2,bomb3,bomb4,bomb5,flag,spy]
+#pieces2=[xmarshall,xgeneral,xcolonel1,xcolonel2,xmajor1,xmajor2,xmajor3,xcaptain1,xcaptain2,xcaptain3,xcaptain4,xlieutenant1,xlieutenant2,xlieutenant3,xlieutenant4,xsergeant1,xsergeant2,xsergeant3,xsergeant4,xminer1,xminer2,xminer3,xminer4,xminer5,xscout1,xscout2,xscout3,xscout4,xscout5,xscout6,xscout7,xscout8,xbomb1,xbomb2,xbomb3,xbomb4,xbomb5,xflag,xspy]
 piecesall=[marshall,general,colonel1,colonel2,major1,major2,major3,captain1,captain2,captain3,captain4,lieutenant1,lieutenant2,lieutenant3,lieutenant4,sergeant1,sergeant2,sergeant3,sergeant4,miner1,miner2,miner3,miner4,miner5,scout1,scout2,scout3,scout4,scout5,scout6,scout7,scout8,bomb1,bomb2,bomb3,bomb4,bomb5,flag,spy,xmarshall,xgeneral,xcolonel1,xcolonel2,xmajor1,xmajor2,xmajor3,xcaptain1,xcaptain2,xcaptain3,xcaptain4,xlieutenant1,xlieutenant2,xlieutenant3,xlieutenant4,xsergeant1,xsergeant2,xsergeant3,xsergeant4,xminer1,xminer2,xminer3,xminer4,xminer5,xscout1,xscout2,xscout3,xscout4,xscout5,xscout6,xscout7,xscout8,xbomb1,xbomb2,xbomb3,xbomb4,xbomb5,xflag,xspy]
 
 
-pez=[scout1,xscout1]
-
+pieces1=[marshall,general]
+pieces2=[xmarshall,xgeneral]
 board_create()
 turn_board()
 select_piece()
