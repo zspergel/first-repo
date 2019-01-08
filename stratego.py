@@ -243,17 +243,26 @@ class scout(piece):
                     else:
                         self.jump()
 def select_piece():
+    global playernum
     row=input('select a piece. Enter the row of the piece')
     column=input('enter the column')
+    column=int(column)
+    row=int(row)
     for i in lines:
         if row==i[0]:
-            if i[column]=='-' or i[column]=='0':
+            if i[column]=='-' or i[column]=='0' or i[column]=='X':
                 print('that is not a piece')
                 select_piece()
-    for n in pieces:
-        if n.line==row and n.spot==column:
-            print(f'You have selected the {n.name} on {column},{row}')
-            n.move()
+    if playernum==1:
+        for n in pieces1:
+            if n.line==row and n.spot==column:
+                print(f'You have selected the {n.name} on {column},{row}')
+                n.move()
+    if playernum==2:
+        for n in pieces2:
+            if n.line==row and n.spot==column:
+                print(f'You have selected the {n.name} on {column},{row}')
+                n.move()
 
 '''begin piece def'''
 marshall=piece('marshall',10,1,0,0,1)
