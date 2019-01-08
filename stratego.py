@@ -1,4 +1,5 @@
-import random
+import pygame
+from pygame.locals import *
 playernum=1
 
 line1=[1,'-','-','-','-','-','-','-','-','-','-']
@@ -353,8 +354,41 @@ piecesall=[marshall,general,colonel1,colonel2,major1,major2,major3,captain1,capt
 
 pieces1=[marshall,general]
 pieces2=[xmarshall,xgeneral]
-board_create()
-turn_board()
-select_piece()
-board()
+#board_create()
+#turn_board()
+#select_piece()
+#board()
+"""pygame code below here"""
+pygame.init()
+screen=pygame.display.set_mode((800,700))
+numbers='0123456789'
+"""colors"""
+blue=(0,0,255)
+red=(255,0,0)
+green=(0,255,0)
+font=pygame.font.SysFont('comisansms',30)
+def main_loop():
+    running=True
+    screen.fill((255,255,255))
+    while running:
+        for event in pygame.event.get():
+            if event.type==QUIT:
+                running=False
+            if event.type==pygame.KEYDOWN:
+                n=pygame.key.name(event.key)
+                print(n)
+        for i in range(11):
+            pygame.draw.line(screen,blue,(100+50*i,100),(100+50*i,600))
+            pygame.draw.line(screen,blue,(100,100+50*i),(600,100+50*i))
+        z=0
+        
+        for line in lines:
+            n=0
+            for i in line:
+                linetxt=font.render(str(i),True,blue)
+                screen.blit(linetxt,(65+50*n,120+50*z))
+                n+=1
+            z+=1
+        pygame.display.update()
+main_loop()
 
