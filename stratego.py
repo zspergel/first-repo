@@ -138,10 +138,10 @@ class piece():
     def location(self):
         for i in lines:
             if self.line==i[0]:
-                i[self.spot]=self.name
+                i[self.spot]=self.strength
     def select_loc(self):
-        row=input(f'select row for {self.name}')
-        row=int(row)
+        global column
+        row_column()
         if playernum==1 and row<7:
             print('you must put your pieces in the bottom four rows')
             self.select_loc()
@@ -149,7 +149,6 @@ class piece():
             print('you must put your pieces in the bottom four rows')
             self.select_loc()
         self.line=row
-        column=input('select column')
         column=int(column)
         self.spot=column
         for i in lines:
@@ -160,8 +159,20 @@ class piece():
 
 
 def board():
-    for i in lines:
-        print(i)
+    screen.fill((255,255,255))
+    for i in range(11):
+        pygame.draw.line(screen,blue,(100+50*i,100),(100+50*i,600))
+        pygame.draw.line(screen,blue,(100,100+50*i),(600,100+50*i))
+    z=0
+    
+    for line in lines:
+        n=0
+        for i in line:
+            linetxt=font.render(str(i),True,blue)
+            screen.blit(linetxt,(65+50*n,120+50*z))
+            n+=1
+        z+=1
+        pygame.display.update()
 def turn_board():
     global playernum
     for L in lines:
@@ -190,7 +201,8 @@ def board_create():
         for i in pieces1:
             i.select_loc()
             i.location()
-            turn_board()
+            board()
+        turn_board()
     playernum+=1
     turn_board()
     if playernum==2:
@@ -245,10 +257,31 @@ class scout(piece):
                         self.jump()
 def select_piece():
     global playernum
-    row=input('select a piece. Enter the row of the piece')
-    column=input('enter the column')
+    selrow=font.render('Select row of piece',True,blue)
+    screen.blit(selrow,(25,25))
+    pygame.display.update()
+    running=True
+    ro=''
+    while running:
+        for event in pygame.event.get():
+            if event.type==pygame.KEYDOWN and len(ro)==0:
+                ro=pygame.key.name(event.key)
+                print(ro)
+            if event.type==pygame.QUIT:
+                running=False
+                
+            n=font.render(ro,True,blue)
+            screen.blit(n,(300,25))
+            pygame.display.update()
+            if event.type==pygame.KEYDOWN:
+                if event.key==pygame.K_RETURN:
+                    if len(ro)==1 and ro.isnumeric()==True:
+                        row=int(ro)
+                        running=False
+    board()
+    column=4
     column=int(column)
-    row=int(row)
+    row=int(ro)
     for i in lines:
         if row==i[0]:
             if i[column]=='-' or i[column]=='0' or i[column]=='X':
@@ -361,7 +394,6 @@ pieces2=[xmarshall,xgeneral]
 """pygame code below here"""
 pygame.init()
 screen=pygame.display.set_mode((800,700))
-numbers='0123456789'
 """colors"""
 blue=(0,0,255)
 red=(255,0,0)
@@ -389,6 +421,55 @@ def main_loop():
                 screen.blit(linetxt,(65+50*n,120+50*z))
                 n+=1
             z+=1
+        board_create()
+        board()
         pygame.display.update()
+def row_column():
+    global row
+    global column
+    selrow=font.render('Select row of piece',True,blue)
+    screen.blit(selrow,(25,25))
+    pygame.display.update()
+    running=True
+    ro=''
+    while running:
+        for event in pygame.event.get():
+            if event.type==pygame.KEYDOWN and len(ro)==0:
+                ro=pygame.key.name(event.key)
+                print(ro)
+            if event.type==pygame.QUIT:
+                running=False
+                
+            n=font.render(ro,True,blue)
+            screen.blit(n,(300,25))
+            pygame.display.update()
+            if event.type==pygame.KEYDOWN:
+                if event.key==pygame.K_RETURN:
+                    if len(ro)==1 and ro.isnumeric()==True:
+                        row=int(ro)
+                        running=False
+    board()
+    selcol=font.render('Select column of piece',True,blue)
+    screen.blit(selcol,(25,25))
+    pygame.display.update()
+    running=True
+    ro=''
+    while running:
+        for event in pygame.event.get():
+            if event.type==pygame.KEYDOWN and len(ro)==0:
+                ro=pygame.key.name(event.key)
+                print(ro)
+            if event.type==pygame.QUIT:
+                running=False
+                
+            n=font.render(ro,True,blue)
+            screen.blit(n,(300,25))
+            pygame.display.update()
+            if event.type==pygame.KEYDOWN:
+                if event.key==pygame.K_RETURN:
+                    if len(ro)==1 and ro.isnumeric()==True:
+                        column=int(ro)
+                        running=False
+    board()
 main_loop()
 
