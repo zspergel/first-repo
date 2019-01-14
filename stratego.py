@@ -37,14 +37,21 @@ class piece():
                 return
             print(f'You win. your {self.name} defeated a {enemy.name}')
             for i in lines:
-                if (enemy.line-1)==i[0]:
-                    i[enemy.spot]='-'
-                    self.move(direc)
+                if i[0]==self.line:
+                    i[self.spot]='-'
+            self.line=enemy.line
+            self.spot=enemy.spot
+            enemy.line=0
+            enemy.spot=0
+            self.location()
+            print(i)
         if self.strength<enemy.strength:
             print(f'you lost. Your {self.name} was defeated by a {enemy.name}')
             for i in lines:
                 if (self.line)==i[0]:
                     i[self.spot]='-'
+                    self.spot=0
+                    self.line=0
     def row_column(self):
         global row
         global column
@@ -90,22 +97,20 @@ class piece():
                         if len(ro)==1 and ro.isnumeric()==True:
                             column=int(ro)
                             running=False
-        board()
+        turn_board()
 
 
-    def move(self,move=''):
-        global direc
+    def move(self):
         if self.name=='bomb':
             print('bombs cant move')
             piece_select()
         if self.name=='flag':
             print('the flag cant move')
             piece_select()
-        if move=='':
+        if 1==1:
             turn_board()
-            direc=font.render('move or press x to select a different piece',True,blue)
-            screen.blit(direc,(25,25))
-            move=direc
+            move=font.render('move or press x to select a different piece',True,blue)
+            screen.blit(move,(25,25))
             running=True
             ro=''
             while running:
@@ -128,25 +133,23 @@ class piece():
         if move=='x':
             piece_select()
         if move=='s':
-            print('yeah?')
             for i in lines:
                 if (self.line+1)==i[0]:
                     if i[self.spot]=='-':
                         print('no one is there')
                         i[self.spot]=self.strength
-                        n=i[0]-1
                         for x in lines:
-                          if x[0]==n:
+                          if x[0]==self.line:
                             x[self.spot]='-'
                             self.line+=1
+                            return
                     elif i[self.spot]==0:
                         print('that is the lake')
                         self.move()
                     else:
-                        n=i[0]-1
                         print('That is an enemy')
-                        for x in pieces:
-                            if x.line==n and x.spot==self.spot:
+                        for x in piecesall:
+                            if x.line==i[0] and x.spot==self.spot:
                                 self.attack(x)
         if move=='w':
             for i in lines:
@@ -159,14 +162,15 @@ class piece():
                           if x[0]==n:
                             x[self.spot]='-'
                             self.line-=1
+                            return
                     elif i[self.spot]==0:
                         print('that is the lake')
                         self.move()
                     else:
                         n=i[0]+1
                         print('That is an enemy')
-                        for x in pieces:
-                            if x.line==n and x.spot==self.spot:
+                        for x in piecesall:
+                            if x.line==i[0] and x.spot==self.spot:
                                 self.attack(x)
         if move=='a':
             for i in lines:
@@ -181,7 +185,7 @@ class piece():
                         self.move()
                     else:
                         print('That is an enemy')
-                        for x in pieces:
+                        for x in piecesall:
                             n=self.spot-1
                             if x.line==self.line and x.spot==n:
                                 self.attack(x)
@@ -198,11 +202,12 @@ class piece():
                         self.move()
                     else:
                         print('That is an enemy')
-                        for x in pieces:
+                        for x in piecesall:
                             n=self.spot+1
                             if x.line==self.line and x.spot==n:
                                 self.attack(x)
         turn_board()
+
         pygame.display.update()
         
     def location(self):
@@ -251,6 +256,7 @@ def turn_board():
     global playernum
     n=0
     z=0
+    print(f'The marshall is on {marshall.line},{marshall.spot}. why dosnt this work')
     for L in lines:
         linelist=[]
         Spot=-1
@@ -264,7 +270,6 @@ def turn_board():
                     if i.line==L[0]:
                         if i.spot==Spot:
                             if i.player==playernum:
-                                print('player', playernum)
                                 linelist.append(strung)
                             else:
                                 linelist.append('X')
@@ -284,7 +289,7 @@ def board_create():
         for i in pieces1:
             i.select_loc()
             i.location()
-            board()
+            turn_board()
         playernum+=1
         turn_board()
         if playernum==2:
@@ -353,13 +358,21 @@ def select_piece():
                 turn_board()
                 screen.blit(selected,(25,25))
                 pygame.display.update()
-                pygame.time.wait(1000)
+                pygame.time.wait(500)
                 n.move()
+                playernum+=1
+                turn_board()
     if playernum==2:
         for n in pieces2:
             if n.line==row and n.spot==column:
-                print(f'You have selected the {n.name} on {column},{row}')
+                selected=font.render(f'You have selected the {n.name} on {column},{row}',True,blue)
+                turn_board()
+                screen.blit(selected,(25,25))
+                pygame.display.update()
+                pygame.time.wait(500)
                 n.move()
+                playernum-=1
+                turn_board()
 
 '''begin piece def'''
 marshall=piece('marshall',10,1,0,0,1)
@@ -482,9 +495,9 @@ def main_loop():
                 n+=1
             z+=1
         board_create()
-        select_piece()
-        pygame.time.wait(2000)
-        pygame.display.update()
+        while True:
+            select_piece()
+            pygame.display.update()
 def row_columngen():
         global row
         global column
