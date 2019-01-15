@@ -14,6 +14,7 @@ line9=[9,'-','-','-','-','-','-','-','-','-','-']
 line10=[10,'-','-','-','-','-','-','-','-','-','-']
 lines=[line1,line2,line3,line4,line5,line6,line7,line8,line9,line10]
 move='-'
+recap=''
 class piece():
     '''generic class for all pieces'''
     def __init__(self,name,strength,speed,line,spot,player):
@@ -24,6 +25,7 @@ class piece():
         self.spot=spot
         self.player=player
     def attack(self,enemy):
+        global recap
         if self.player==enemy.player:
             print('You cant attack yourself')
             self.move
@@ -36,6 +38,7 @@ class piece():
                 print('you captured the flag and won the game')
                 return
             print(f'You win. your {self.name} defeated a {enemy.name}')
+            recap=f'You win. your {self.name} defeated a {enemy.name}'
             for i in lines:
                 if i[0]==self.line:
                     i[self.spot]='-'
@@ -55,6 +58,8 @@ class piece():
     def row_column(self):
         global row
         global column
+        global recap
+        recap=''
         selrow=font.render(f'Select row of {self.name}',True,blue)
         screen.blit(selrow,(25,25))
         pygame.display.update()
@@ -208,6 +213,8 @@ class piece():
                                 self.attack(x)
         turn_board()
 
+
+
         pygame.display.update()
         
     def location(self):
@@ -256,7 +263,6 @@ def turn_board():
     global playernum
     n=0
     z=0
-    print(f'The marshall is on {marshall.line},{marshall.spot}. why dosnt this work')
     for L in lines:
         linelist=[]
         Spot=-1
@@ -497,7 +503,17 @@ def main_loop():
         board_create()
         while True:
             select_piece()
-            pygame.display.update()
+            change=True
+            while change==True:
+                screen.fill((255,255,255))
+                playerchange=font.render('Change the player. press enter to continue',True,blue)
+                screen.blit(playerchange,(25,25))
+                pygame.display.update()
+                for event in pygame.event.get():
+                    if event.type==pygame.KEYDOWN:
+                        if event.key==K_RETURN:
+                            change=False
+            turn_board()
 def row_columngen():
         global row
         global column
