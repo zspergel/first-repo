@@ -19,6 +19,7 @@ attackrecap=True
 class piece():
     '''generic class for all pieces'''
     def __init__(self,name,strength,speed,line,spot,player):
+        '''intits all variables for class'''
         self.name=name
         self.strength=strength
         self.speed=speed
@@ -26,6 +27,7 @@ class piece():
         self.spot=spot
         self.player=player
     def attack(self,enemy):
+        '''attacks a piece that has been moved into'''
         global recap
         global attackrecap
         if self.player==enemy.player:
@@ -66,6 +68,7 @@ class piece():
                     self.spot=0
                     self.line=0
     def row_column(self):
+        '''get user input for row and column'''
         global row
         global column
         global recap
@@ -114,6 +117,7 @@ class piece():
 
 
     def move(self):
+        '''lets player move'''
         attackrecap=False
         if self.name=='bomb':
             bombtxt=font.render('bombs cant move',True,blue)
@@ -243,10 +247,12 @@ class piece():
         pygame.display.update()
         
     def location(self):
+        '''puts the piece onto the board'''
         for i in lines:
             if self.line==i[0]:
                 i[self.spot]=self.strength
     def select_loc(self):
+        '''lets the player put the pieces onto the board'''
         global column
         self.row_column()
         if playernum==1 and row<7:
@@ -275,6 +281,7 @@ class piece():
 
 
 def board():
+    '''puts the board on the screen'''
     screen.fill((255,255,255))
     for i in range(11):
         pygame.draw.line(screen,blue,(100+50*i,100),(100+50*i,600))
@@ -290,7 +297,7 @@ def board():
         z+=1
         pygame.display.update()
 def turn_board():
-    
+    '''puts the board on the screen with hidden pieces based on turns'''
     global playernum
     if playernum>=3:
         playernum=2
@@ -329,6 +336,7 @@ def turn_board():
 
 
 def board_create():
+    '''creates the board with player selecting piece locations'''
     global playernum
     if playernum==1:
         for i in pieces1:
@@ -350,6 +358,7 @@ def board_create():
 
 
 def select_piece():
+    '''selects the location for piece to attack'''
     global playernum
     row_columngen()
     for i in lines:
@@ -484,6 +493,7 @@ red=(255,0,0)
 green=(0,255,0)
 font=pygame.font.SysFont('comisansms',30)
 def main_loop():
+    '''main loop for the game'''
     global playernum
     global attackrecap
     global recap
@@ -532,6 +542,7 @@ def main_loop():
             if playernum<=0:
                 playernum=1
 def row_columngen():
+        '''gets the row and column for pieces to be placed on board'''
         global row
         global column
         selrow=font.render(f'Select row of piece',True,blue)
