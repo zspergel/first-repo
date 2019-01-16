@@ -15,6 +15,7 @@ line10=[10,'-','-','-','-','-','-','-','-','-','-']
 lines=[line1,line2,line3,line4,line5,line6,line7,line8,line9,line10]
 move='-'
 recap=''
+
 class piece():
     '''generic class for all pieces'''
     def __init__(self,name,strength,speed,line,spot,player):
@@ -34,11 +35,14 @@ class piece():
         if enemy.name=='marshall' and self.name=='spy':
             enemy.strength-=20
         if self.strength>=enemy.strength:
+            attackrecap=True
             if enemy.name=='flag':
                 print('you captured the flag and won the game')
                 return
-            print(f'You win. your {self.name} defeated a {enemy.name}')
-            recap=f'You win. your {self.name} defeated a {enemy.name}'
+            victory=font.render(f'You win. your {self.name} defeated a {enemy.name}',True,blue)
+            display.blit(victory,(25,65))
+            pygame.display.update()
+            recap=f'You lost. your {enemy.name} was defeated by a {self.name}'
             for i in lines:
                 if i[0]==self.line:
                     i[self.spot]='-'
@@ -47,9 +51,11 @@ class piece():
             enemy.line=0
             enemy.spot=0
             self.location()
-            print(i)
         if self.strength<enemy.strength:
-            print(f'you lost. Your {self.name} was defeated by a {enemy.name}')
+            attackrecap=True
+            loss=font.render(f'you lost. Your {self.name} was defeated by a {enemy.name}',True,blue)
+            display.blit(loss,(25,65))
+            pygame.display.update()
             for i in lines:
                 if (self.line)==i[0]:
                     i[self.spot]='-'
@@ -69,7 +75,6 @@ class piece():
             for event in pygame.event.get():
                 if event.type==pygame.KEYDOWN and len(ro)==0:
                     ro=pygame.key.name(event.key)
-                    print(ro)
                 if event.type==pygame.QUIT:
                     running=False
                     
@@ -90,7 +95,6 @@ class piece():
             for event in pygame.event.get():
                 if event.type==pygame.KEYDOWN and len(ro)==0:
                     ro=pygame.key.name(event.key)
-                    print(ro)
                 if event.type==pygame.QUIT:
                     running=False
                     
@@ -106,6 +110,7 @@ class piece():
 
 
     def move(self):
+        attackrecap=False
         if self.name=='bomb':
             print('bombs cant move')
             piece_select()
@@ -122,7 +127,6 @@ class piece():
                 for event in pygame.event.get():
                     if event.type==pygame.KEYDOWN and len(ro)==0:
                         ro=pygame.key.name(event.key)
-                        print(ro)
                     if event.type==pygame.QUIT:
                         running=False
                         
@@ -134,9 +138,9 @@ class piece():
                             if len(ro)==1:
                                 move=str(ro)
                                 running=False
-       # print(move)
         if move=='x':
-            piece_select()
+            turn_board()
+            select_piece()
         if move=='s':
             for i in lines:
                 if (self.line+1)==i[0]:
@@ -256,11 +260,15 @@ def board():
         z+=1
         pygame.display.update()
 def turn_board():
+    global playernum
+    if playernum>=3:
+        playernum=2
+    if playernum<=0:
+        playernum=1
     screen.fill((255,255,255))
     for i in range(11):
         pygame.draw.line(screen,blue,(100+50*i,100),(100+50*i,600))
         pygame.draw.line(screen,blue,(100,100+50*i),(600,100+50*i))
-    global playernum
     n=0
     z=0
     for L in lines:
@@ -355,7 +363,12 @@ def select_piece():
     for i in lines:
         if row==i[0]:
             if i[column]=='-' or i[column]=='0' or i[column]=='X':
-                print('that is not a piece')
+                print('not a piece')
+                notpiece=font.render('that is not a piece',True,blue)
+                screen.blit(notpiece,(25,65))
+                pygame.display.update()
+                pygame.time.wait(750)
+                turn_board()
                 select_piece()
     if playernum==1:
         for n in pieces1:
@@ -364,10 +377,10 @@ def select_piece():
                 turn_board()
                 screen.blit(selected,(25,25))
                 pygame.display.update()
-                pygame.time.wait(500)
+                pygame.time.wait(1000)
                 n.move()
-                playernum+=1
                 turn_board()
+                playernum+=1
     if playernum==2:
         for n in pieces2:
             if n.line==row and n.spot==column:
@@ -375,10 +388,10 @@ def select_piece():
                 turn_board()
                 screen.blit(selected,(25,25))
                 pygame.display.update()
-                pygame.time.wait(500)
+                pygame.time.wait(1000)
                 n.move()
-                playernum-=1
                 turn_board()
+                playernum-=1
 
 '''begin piece def'''
 marshall=piece('marshall',10,1,0,0,1)
@@ -479,6 +492,7 @@ red=(255,0,0)
 green=(0,255,0)
 font=pygame.font.SysFont('comisansms',30)
 def main_loop():
+    global playernum
     running=True
     screen.fill((255,255,255))
     while running:
@@ -487,7 +501,6 @@ def main_loop():
                 running=False
             if event.type==pygame.KEYDOWN:
                 n=pygame.key.name(event.key)
-                print(n)
         for i in range(11):
             pygame.draw.line(screen,blue,(100+50*i,100),(100+50*i,600))
             pygame.draw.line(screen,blue,(100,100+50*i),(600,100+50*i))
@@ -504,6 +517,7 @@ def main_loop():
         while True:
             select_piece()
             change=True
+            #pygame.time.wait(1000)
             while change==True:
                 screen.fill((255,255,255))
                 playerchange=font.render('Change the player. press enter to continue',True,blue)
@@ -514,6 +528,10 @@ def main_loop():
                         if event.key==K_RETURN:
                             change=False
             turn_board()
+            if playernum>=3:
+                playernum=2
+            if playernum<=0:
+                playernum=1
 def row_columngen():
         global row
         global column
@@ -526,7 +544,6 @@ def row_columngen():
             for event in pygame.event.get():
                 if event.type==pygame.KEYDOWN and len(ro)==0:
                     ro=pygame.key.name(event.key)
-                    print(ro)
                 if event.type==pygame.QUIT:
                     running=False
                     
@@ -547,7 +564,6 @@ def row_columngen():
             for event in pygame.event.get():
                 if event.type==pygame.KEYDOWN and len(ro)==0:
                     ro=pygame.key.name(event.key)
-                    print(ro)
                 if event.type==pygame.QUIT:
                     running=False
                     
@@ -559,4 +575,5 @@ def row_columngen():
                         if len(ro)==1 and ro.isnumeric()==True:
                             column=int(ro)
                             running=False
+        
 main_loop()
