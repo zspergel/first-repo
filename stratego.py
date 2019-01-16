@@ -15,7 +15,7 @@ line10=[10,'-','-','-','-','-','-','-','-','-','-']
 lines=[line1,line2,line3,line4,line5,line6,line7,line8,line9,line10]
 move='-'
 recap=''
-
+attackrecap=True
 class piece():
     '''generic class for all pieces'''
     def __init__(self,name,strength,speed,line,spot,player):
@@ -27,6 +27,7 @@ class piece():
         self.player=player
     def attack(self,enemy):
         global recap
+        global attackrecap
         if self.player==enemy.player:
             print('You cant attack yourself')
             self.move
@@ -40,8 +41,9 @@ class piece():
                 print('you captured the flag and won the game')
                 return
             victory=font.render(f'You win. your {self.name} defeated a {enemy.name}',True,blue)
-            display.blit(victory,(25,65))
+            screen.blit(victory,(25,65))
             pygame.display.update()
+            pygame.time.wait(750)
             recap=f'You lost. your {enemy.name} was defeated by a {self.name}'
             for i in lines:
                 if i[0]==self.line:
@@ -54,8 +56,10 @@ class piece():
         if self.strength<enemy.strength:
             attackrecap=True
             loss=font.render(f'you lost. Your {self.name} was defeated by a {enemy.name}',True,blue)
-            display.blit(loss,(25,65))
+            screen.blit(loss,(25,65))
             pygame.display.update()
+            pygame.time.wait(750)
+            recap=f'You won. Your {enemy.name} defeated a {self.name}'
             for i in lines:
                 if (self.line)==i[0]:
                     i[self.spot]='-'
@@ -493,6 +497,8 @@ green=(0,255,0)
 font=pygame.font.SysFont('comisansms',30)
 def main_loop():
     global playernum
+    global attackrecap
+    global recap
     running=True
     screen.fill((255,255,255))
     while running:
@@ -528,6 +534,11 @@ def main_loop():
                         if event.key==K_RETURN:
                             change=False
             turn_board()
+            if attackrecap==True:
+                rec=font.render(recap,True,blue)
+                screen.blit(rec,(25,65))
+                pygame.display.update()
+                pygame.time.wait(750)
             if playernum>=3:
                 playernum=2
             if playernum<=0:
