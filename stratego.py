@@ -116,10 +116,16 @@ class piece():
     def move(self):
         attackrecap=False
         if self.name=='bomb':
-            print('bombs cant move')
+            bombtxt=font.render('bombs cant move',True,blue)
+            screen.blit(bombtxt,(25,65))
+            pygame.display.update()
+            pygame.time.wait(600)
             piece_select()
         if self.name=='flag':
-            print('the flag cant move')
+            flagtxt=font.render('the flag cant move',True,blue)
+            screen.blit(flagtxt,(25,65))
+            pygame.display.update()
+            pygame.time.wait(600)
             piece_select()
         if 1==1:
             turn_board()
@@ -149,7 +155,6 @@ class piece():
             for i in lines:
                 if (self.line+1)==i[0]:
                     if i[self.spot]=='-':
-                        print('no one is there')
                         i[self.spot]=self.strength
                         for x in lines:
                           if x[0]==self.line:
@@ -157,10 +162,12 @@ class piece():
                             self.line+=1
                             return
                     elif i[self.spot]==0:
-                        print('that is the lake')
+                        laketxt=font.render('that is the lake',True,blue)
+                        screen.blit(laketxt,(25,65))
+                        pygame.display.update()
+                        pygame.time.wait(600)
                         self.move()
                     else:
-                        print('That is an enemy')
                         for x in piecesall:
                             if x.line==i[0] and x.spot==self.spot:
                                 self.attack(x)
@@ -177,7 +184,10 @@ class piece():
                             self.line-=1
                             return
                     elif i[self.spot]==0:
-                        print('that is the lake')
+                        laketxt=font.render('that is the lake',True,blue)
+                        screen.blit(laketxt,(25,65))
+                        pygame.display.update()
+                        pygame.time.wait(600)                        
                         self.move()
                     else:
                         n=i[0]+1
@@ -194,7 +204,10 @@ class piece():
                         self.spot-=1
                         i[self.spot]=self.strength
                     elif i[self.spot-1]==0:
-                        print('that is a lake')
+                        laketxt=font.render('that is the lake',True,blue)
+                        screen.blit(laketxt,(25,65))
+                        pygame.display.update()
+                        pygame.time.wait(600)
                         self.move()
                     else:
                         print('That is an enemy')
@@ -211,7 +224,10 @@ class piece():
                         self.spot+=1
                         i[self.spot]=self.strength
                     elif i[self.spot+1]==0:
-                        print('that is a lake')
+                        laketxt=font.render('that is the lake',True,blue)
+                        screen.blit(laketxt,(25,65))
+                        pygame.display.update()
+                        pygame.time.wait(600)
                         self.move()
                     else:
                         print('That is an enemy')
