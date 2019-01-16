@@ -156,6 +156,12 @@ class piece():
                 if (self.line+1)==i[0]:
                     if i[self.spot]=='-':
                         i[self.spot]=self.strength
+                        if self.name=='flag':
+                            i[self.spot]='F'
+                        elif self.name=='bomb':
+                            i[self.spot]='B'
+                        elif self.name='spy':
+                            i[self.spot]=='S'
                         for x in lines:
                           if x[0]==self.line:
                             x[self.spot]='-'
@@ -191,7 +197,6 @@ class piece():
                         self.move()
                     else:
                         n=i[0]+1
-                        print('That is an enemy')
                         for x in piecesall:
                             if x.line==i[0] and x.spot==self.spot:
                                 self.attack(x)
@@ -199,7 +204,6 @@ class piece():
             for i in lines:
                 if (self.line)==i[0]:
                     if i[self.spot-1]=='-':
-                        print('no one is there')
                         i[self.spot]='-'
                         self.spot-=1
                         i[self.spot]=self.strength
@@ -210,7 +214,6 @@ class piece():
                         pygame.time.wait(600)
                         self.move()
                     else:
-                        print('That is an enemy')
                         for x in piecesall:
                             n=self.spot-1
                             if x.line==self.line and x.spot==n:
@@ -219,7 +222,6 @@ class piece():
             for i in lines:
                 if (self.line)==i[0]:
                     if i[self.spot+1]=='-':
-                        print('no one is there')
                         i[self.spot]='-'
                         self.spot+=1
                         i[self.spot]=self.strength
@@ -230,7 +232,6 @@ class piece():
                         pygame.time.wait(600)
                         self.move()
                     else:
-                        print('That is an enemy')
                         for x in piecesall:
                             n=self.spot+1
                             if x.line==self.line and x.spot==n:
@@ -249,10 +250,16 @@ class piece():
         global column
         self.row_column()
         if playernum==1 and row<7:
-            print('you must put your pieces in the bottom four rows')
+            botfour=font.render('you must put your pieces in the bottom four rows',True,blue)
+            screen.blit(botfour,(25,65))
+            pygame.display.update()
+            pygame.time.wait(600)
             self.select_loc()
         if playernum==2 and row>4:
-            print('you must put your pieces in the bottom four rows')
+            topfour=font.render('you must put your pieces in the bottom four rows',True,blue)
+            screen.blit(topfour(25,65))
+            pygame.display.update()
+            pygame.time.wait(600)
             self.select_loc()
         self.line=row
         column=int(column)
@@ -260,7 +267,10 @@ class piece():
         for i in lines:
             if i[0]==row:
                 if i[column]!='-':
-                    print('that space is filled')
+                    filled=font.render=('that space is filled',True,blue)
+                    screen.blit(filled,(25,65))
+                    pygame.display.update()
+                    pygame.time.wait(600
                     self.select_loc()
 
 
@@ -280,6 +290,7 @@ def board():
         z+=1
         pygame.display.update()
 def turn_board():
+    
     global playernum
     if playernum>=3:
         playernum=2
@@ -337,46 +348,7 @@ def board_create():
 
 
 
-class scout(piece):
-    def __init__(self,name,strength,speed,line,spot,player):
-        piece.__init__(self,name,strength,speed,line,spot,player)
-    def move(self):
-        fail=0
-        move=input('move')
-        if move=='w':
-            jumped=input('what spot do you want to jump to')
-            jumped=int(jumped)
-            for i in lines:
-                if i[0]==self.line:
-                    for z in range(jumped):
-                        if i[self.spot+z-jumped]!='-':
-                            print("you cant jump through pieces/lakes")
-                            fail+=1
-                    if fail==0:
-                        i[self.spot]='-'
-                        self.line-=jumped
-                        for x in lines:
-                            if self.line==x[0]:
-                                x[self.spot]=self.name
-                    else:
-                        self.jump()
-        if move=='s':
-            jumped=input('what spot do you want to jump to')
-            jumped=int(jumped)
-            for i in lines:
-                if i[0]==self.line:
-                    for z in range(jumped):
-                        if i[self.spot-z+jumped]!='-':
-                            print("you cant jump through pieces/lakes")
-                            fail+=1
-                    if fail==0:
-                        i[self.spot]='-'
-                        self.line+=jumped
-                        for x in lines:
-                            if self.line==x[0]:
-                                x[self.spot]=self.name
-                    else:
-                        self.jump()
+
 def select_piece():
     global playernum
     row_columngen()
@@ -438,14 +410,14 @@ miner2=piece('miner',3,1,0,0,1)
 miner3=piece('miner',3,1,0,0,1)
 miner4=piece('miner',3,1,0,0,1)
 miner5=piece('miner',3,1,0,0,1)
-scout1=scout('scout',2,1,0,0,1)
-scout2=scout('scout',2,1,0,0,1)
-scout3=scout('scout',2,1,0,0,1)
-scout4=scout('scout',2,1,0,0,1)
-scout5=scout('scout',2,1,0,0,1)
-scout6=scout('scout',2,1,0,0,1)
-scout7=scout('scout',2,1,0,0,1)
-scout8=scout('scout',2,1,0,0,1)
+scout1=piece('scout',2,1,0,0,1)
+scout2=piece('scout',2,1,0,0,1)
+scout3=piece('scout',2,1,0,0,1)
+scout4=piece('scout',2,1,0,0,1)
+scout5=piece('scout',2,1,0,0,1)
+scout6=piece('scout',2,1,0,0,1)
+scout7=piece('scout',2,1,0,0,1)
+scout8=piece('scout',2,1,0,0,1)
 bomb1=piece('bomb',20,1,0,0,1)
 bomb2=piece('bomb',20,1,0,0,1)
 bomb3=piece('bomb',20,1,0,0,1)
@@ -480,14 +452,14 @@ xminer2=piece('miner',3,1,0,0,2)
 xminer3=piece('miner',3,1,0,0,2)
 xminer4=piece('miner',3,1,0,0,2)
 xminer5=piece('miner',3,1,0,0,2)
-xscout1=scout('scout',2,1,0,0,2)
-xscout2=scout('scout',2,1,0,0,2)
-xscout3=scout('scout',2,1,0,0,2)
-xscout4=scout('scout',2,1,0,0,2)
-xscout5=scout('scout',2,1,0,0,2)
-xscout6=scout('scout',2,1,0,0,2)
-xscout7=scout('scout',2,1,0,0,2)
-xscout8=scout('scout',2,1,0,0,2)
+xscout1=piece('scout',2,1,0,0,2)
+xscout2=piece('scout',2,1,0,0,2)
+xscout3=piece('scout',2,1,0,0,2)
+xscout4=piece('scout',2,1,0,0,2)
+xscout5=piece('scout',2,1,0,0,2)
+xscout6=piece('scout',2,1,0,0,2)
+xscout7=piece('scout',2,1,0,0,2)
+xscout8=piece('scout',2,1,0,0,2)
 xbomb1=piece('bomb',20,1,0,0,2)
 xbomb2=piece('bomb',20,1,0,0,2)
 xbomb3=piece('bomb',20,1,0,0,2)
