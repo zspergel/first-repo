@@ -80,8 +80,9 @@ class piece():
         ro=''
         while running:
             for event in pygame.event.get():
-                if event.type==pygame.KEYDOWN and len(ro)==0:
-                    ro=pygame.key.name(event.key)
+                if event.type==pygame.KEYDOWN and len(ro)<2:
+                    if str(pygame.key.name(event.key)).isnumeric()==True:
+                        ro+=pygame.key.name(event.key)
                 if event.type==pygame.QUIT:
                     running=False
                     
@@ -90,9 +91,14 @@ class piece():
                 pygame.display.update()
                 if event.type==pygame.KEYDOWN:
                     if event.key==pygame.K_RETURN:
-                        if len(ro)==1 and ro.isnumeric()==True:
-                            row=int(ro)
-                            running=False
+                        row=int(ro)
+                        running=False
+        if row>10:
+            toobig=font.render('You cant select a row greater than 10',True,blue)
+            screen.blit(toobig,(25,65))
+            pygame.display.update()
+            pygame.time.wait(600)
+            row_columngen()
         selcol=font.render(f'Select column of {self.name}',True,blue)
         screen.blit(selcol,(350,25))
         pygame.display.update()
@@ -100,8 +106,9 @@ class piece():
         ro=''
         while running:
             for event in pygame.event.get():
-                if event.type==pygame.KEYDOWN and len(ro)==0:
-                    ro=pygame.key.name(event.key)
+                if event.type==pygame.KEYDOWN and len(ro)<2:
+                    if str(pygame.key.name(event.key)).isnumeric()==True:
+                        ro+=pygame.key.name(event.key)
                 if event.type==pygame.QUIT:
                     running=False
                     
@@ -110,9 +117,14 @@ class piece():
                 pygame.display.update()
                 if event.type==pygame.KEYDOWN:
                     if event.key==pygame.K_RETURN:
-                        if len(ro)==1 and ro.isnumeric()==True:
-                            column=int(ro)
-                            running=False
+                        column=int(ro)
+                        running=False
+        if column>10:
+            toobig=font.render('You cant select a column greater than 10',True,blue)
+            screen.blit(toobig,(25,65))
+            pygame.display.update()
+            pygame.time.wait(600)
+            row_columngen()
         turn_board()
 
 
@@ -164,8 +176,8 @@ class piece():
                             i[self.spot]='F'
                         elif self.name=='bomb':
                             i[self.spot]='B'
-                        elif self.name='spy':
-                            i[self.spot]=='S'
+                        elif self.name=='spy':
+                            i[self.spot]='S'
                         for x in lines:
                           if x[0]==self.line:
                             x[self.spot]='-'
@@ -276,7 +288,7 @@ class piece():
                     filled=font.render=('that space is filled',True,blue)
                     screen.blit(filled,(25,65))
                     pygame.display.update()
-                    pygame.time.wait(600
+                    pygame.time.wait(600)
                     self.select_loc()
 
 
@@ -331,6 +343,13 @@ def turn_board():
             screen.blit(linetxt,(115+50*n,120+50*z))
             n+=1
         z+=1
+        num=[1,2,3,4,5,6,7,8,9,10]
+        for i in num:
+            number=font.render(str(i),True,blue)
+            screen.blit(number,(65+50*i,70))
+        for n in num:
+            number=font.render(str(n),True,blue)
+            screen.blit(number,(65,120+50*n))
     pygame.display.update()
 
 
@@ -552,8 +571,9 @@ def row_columngen():
         ro=''
         while running:
             for event in pygame.event.get():
-                if event.type==pygame.KEYDOWN and len(ro)==0:
-                    ro=pygame.key.name(event.key)
+                if event.type==pygame.KEYDOWN and len(ro)<2:
+                    if str(pygame.key.name(event.key)).isnumeric()==True:
+                        ro+=pygame.key.name(event.key)
                 if event.type==pygame.QUIT:
                     running=False
                     
@@ -562,9 +582,14 @@ def row_columngen():
                 pygame.display.update()
                 if event.type==pygame.KEYDOWN:
                     if event.key==pygame.K_RETURN:
-                        if len(ro)==1 and ro.isnumeric()==True:
-                            row=int(ro)
-                            running=False
+                        row=int(ro)
+                        running=False
+        if row>10:
+            toobig=font.render('You cant select a row greater than 10',True,blue)
+            screen.blit(toobig,(25,65))
+            pygame.display.update()
+            pygame.time.wait(600)
+            row_columngen()
         selcol=font.render(f'Select column of piece',True,blue)
         screen.blit(selcol,(350,25))
         pygame.display.update()
@@ -573,7 +598,8 @@ def row_columngen():
         while running:
             for event in pygame.event.get():
                 if event.type==pygame.KEYDOWN and len(ro)==0:
-                    ro=pygame.key.name(event.key)
+                    if str(pygame.key.name(event.key)).isnumeric()==True:
+                        ro+=pygame.key.name(event.key)
                 if event.type==pygame.QUIT:
                     running=False
                     
@@ -585,5 +611,11 @@ def row_columngen():
                         if len(ro)==1 and ro.isnumeric()==True:
                             column=int(ro)
                             running=False
+        if column>10:
+            toobig=font.render('You cant select a column greater than 10',True,blue)
+            screen.blit(toobig,(25,65))
+            pygame.display.update()
+            pygame.time.wait(600)
+            row_columngen()
         
 main_loop()
