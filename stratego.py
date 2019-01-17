@@ -31,8 +31,11 @@ class piece():
         global recap
         global attackrecap
         if self.player==enemy.player:
-            print('You cant attack yourself')
-            self.move
+            selfattack=font.render('You cant attack yourself',True,blue)
+            screen.blit(selfattack,(25,65))
+            pygame.display.update()
+            pygame.time.wait(600)
+            self.move()
         if enemy.name=='bomb' and self.name=='miner':
             enemy.strength-=20
         if enemy.name=='marshall' and self.name=='spy':
@@ -40,8 +43,18 @@ class piece():
         if self.strength>=enemy.strength:
             attackrecap=True
             if enemy.name=='flag':
-                print('you captured the flag and won the game')
-                return
+                screen.fill((255,255,255))
+                win=font.render('you captured the flag and won the game',True,green)
+                screen.blit(win,(200,200))
+                pygame.display.update()
+                running=True
+                while running:
+                    for event in pygame.event.get():
+                        if event.type==pygame.QUIT:
+                            running=False
+                            pygame.quit()
+                            quit()
+    
             victory=font.render(f'You win. your {self.name} defeated a {enemy.name}',True,blue)
             screen.blit(victory,(25,65))
             pygame.display.update()
@@ -199,6 +212,12 @@ class piece():
                     if i[self.spot]=='-':
                         print('no one is there')
                         i[self.spot]=self.strength
+                        if self.name=='flag':
+                            i[self.spot]='F'
+                        elif self.name=='bomb':
+                            i[self.spot]='B'
+                        elif self.name=='spy':
+                            i[self.spot]='S'
                         n=i[0]+1
                         for x in lines:
                           if x[0]==n:
@@ -223,6 +242,12 @@ class piece():
                         i[self.spot]='-'
                         self.spot-=1
                         i[self.spot]=self.strength
+                        if self.name=='flag':
+                            i[self.spot]='F'
+                        elif self.name=='bomb':
+                            i[self.spot]='B'
+                        elif self.name=='spy':
+                            i[self.spot]='S'
                     elif i[self.spot-1]==0:
                         laketxt=font.render('that is the lake',True,blue)
                         screen.blit(laketxt,(25,65))
@@ -241,6 +266,12 @@ class piece():
                         i[self.spot]='-'
                         self.spot+=1
                         i[self.spot]=self.strength
+                        if self.name=='flag':
+                            i[self.spot]='F'
+                        elif self.name=='bomb':
+                            i[self.spot]='B'
+                        elif self.name=='spy':
+                            i[self.spot]='S'
                     elif i[self.spot+1]==0:
                         laketxt=font.render('that is the lake',True,blue)
                         screen.blit(laketxt,(25,65))
@@ -263,6 +294,12 @@ class piece():
         for i in lines:
             if self.line==i[0]:
                 i[self.spot]=self.strength
+                if self.name=='flag':
+                    i[self.spot]='F'
+                elif self.name=='bomb':
+                    i[self.spot]='B'
+                elif self.name=='spy':
+                    i[self.spot]='S'
     def select_loc(self):
         '''lets the player put the pieces onto the board'''
         global column
@@ -309,6 +346,8 @@ def board():
         z+=1
         pygame.display.update()
 def turn_board():
+    for i in lines:
+        print(i)
     '''puts the board on the screen with hidden pieces based on turns'''
     global playernum
     if playernum>=3:
@@ -349,7 +388,7 @@ def turn_board():
             screen.blit(number,(65+50*i,70))
         for n in num:
             number=font.render(str(n),True,blue)
-            screen.blit(number,(65,120+50*n))
+            screen.blit(number,(65,70+50*n))
     pygame.display.update()
 
 
@@ -383,7 +422,6 @@ def select_piece():
     for i in lines:
         if row==i[0]:
             if i[column]=='-' or i[column]=='0' or i[column]=='X':
-                print('not a piece')
                 notpiece=font.render('that is not a piece',True,blue)
                 screen.blit(notpiece,(25,65))
                 pygame.display.update()
@@ -501,7 +539,7 @@ piecesall=[marshall,general,colonel1,colonel2,major1,major2,major3,captain1,capt
 
 
 pieces1=[marshall,general]
-pieces2=[xmarshall,xgeneral]
+pieces2=[xmarshall,xgeneral,xflag]
 
 """pygame code below here"""
 pygame.init()
@@ -524,23 +562,11 @@ def main_loop():
                 running=False
             if event.type==pygame.KEYDOWN:
                 n=pygame.key.name(event.key)
-        for i in range(11):
-            pygame.draw.line(screen,blue,(100+50*i,100),(100+50*i,600))
-            pygame.draw.line(screen,blue,(100,100+50*i),(600,100+50*i))
-        z=0
-        
-        for line in lines:
-            n=0
-            for i in line:
-                linetxt=font.render(str(i),True,blue)
-                screen.blit(linetxt,(65+50*n,120+50*z))
-                n+=1
-            z+=1
+        turn_board()
         board_create()
         while True:
             select_piece()
             change=True
-            #pygame.time.wait(1000)
             while change==True:
                 screen.fill((255,255,255))
                 playerchange=font.render('Change the player. press enter to continue',True,blue)
@@ -597,7 +623,7 @@ def row_columngen():
         ro=''
         while running:
             for event in pygame.event.get():
-                if event.type==pygame.KEYDOWN and len(ro)==0:
+                if event.type==pygame.KEYDOWN and len(ro)<2:
                     if str(pygame.key.name(event.key)).isnumeric()==True:
                         ro+=pygame.key.name(event.key)
                 if event.type==pygame.QUIT:
@@ -608,7 +634,6 @@ def row_columngen():
                 pygame.display.update()
                 if event.type==pygame.KEYDOWN:
                     if event.key==pygame.K_RETURN:
-                        if len(ro)==1 and ro.isnumeric()==True:
                             column=int(ro)
                             running=False
         if column>10:
