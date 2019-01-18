@@ -36,23 +36,11 @@ class piece():
             pygame.display.update()
             pygame.time.wait(600)
             self.move()
-<<<<<<< HEAD
-            #if the piece moved into is form the same player. prints it on board
-            #then updates and waits .6s
-        elif enemy.name=='bomb' and self.name=='miner':
-            enemy.strength-=20
-        #if the enemy is the bomb reduces its strenth so miner will win
-        elif enemy.name=='marshall' and self.name=='spy':
-            enemy.strength-=20
-        #dito for above just with marhsall and spy
-        elif self.strength>=enemy.strength:
-=======
         if enemy.name=='bomb' and self.name=='miner':
             enemy.strength-=20
         if enemy.name=='marshall' and self.name=='spy':
             enemy.strength-=20
         if self.strength>=enemy.strength:
->>>>>>> parent of 6641c58... added comments
             attackrecap=True
             if enemy.name=='flag':
                 screen.fill((255,255,255))
@@ -125,11 +113,6 @@ class piece():
             pygame.time.wait(600)
             turn_board()
             row_columngen()
-<<<<<<< HEAD
-            return
-            #if the typed is bigger than 10 reruns piece selection
-=======
->>>>>>> parent of 6641c58... added comments
         selcol=font.render(f'Select column of {self.name}',True,blue)
         screen.blit(selcol,(350,25))
         pygame.display.update()
@@ -157,11 +140,6 @@ class piece():
             pygame.time.wait(600)
             turn_board()
             row_columngen()
-<<<<<<< HEAD
-            return
-        #same as above but for the column
-=======
->>>>>>> parent of 6641c58... added comments
         turn_board()
 
 
@@ -203,7 +181,6 @@ class piece():
                             if len(ro)==1:
                                 move=str(ro)
                                 running=False
-<<<<<<< HEAD
         #gets the users input and returns it as a string called move
         if move!='x' and move!='s' and move!='w' and move!='a' and move!='d':
             notmove=font.render('that is not W,A,S,D, or X. Only those are keys.',True,blue)
@@ -216,13 +193,10 @@ class piece():
             turn_board()
             select_piece()
             #if x is pressed lets yous select new piece
-        elif move=='s':
-=======
         if move=='x':
             turn_board()
             select_piece()
         if move=='s':
->>>>>>> parent of 6641c58... added comments
             for i in lines:
                 if (self.line+1)==i[0]:
                     if i[self.spot]=='-':
@@ -248,13 +222,7 @@ class piece():
                         for x in piecesall:
                             if x.line==i[0] and x.spot==self.spot:
                                 self.attack(x)
-<<<<<<< HEAD
-                                #if none of the others is true attacks the piece
-        elif move=='w':
-            #next three scetions are all the same ust different directions
-=======
         if move=='w':
->>>>>>> parent of 6641c58... added comments
             for i in lines:
                 if (self.line-1)==i[0]:
                     if i[self.spot]=='-':
@@ -487,13 +455,9 @@ def select_piece():
                 n.move()
                 turn_board()
                 playernum+=1
-<<<<<<< HEAD
                 #finds the name of piece and tells player
                 #then mlets the player move the piece and prints new board
-    elif playernum==2:
-=======
     if playernum==2:
->>>>>>> parent of 6641c58... added comments
         for n in pieces2:
             if n.line==row and n.spot==column:
                 selected=font.render(f'You have selected the {n.name} on {column},{row}',True,blue)
@@ -670,11 +634,6 @@ def row_columngen():
             pygame.display.update()
             pygame.time.wait(600)
             row_columngen()
-<<<<<<< HEAD
-            return
-            #if row is bigger than 10 then reruns code
-=======
->>>>>>> parent of 6641c58... added comments
         selcol=font.render(f'Select column of piece',True,blue)
         screen.blit(selcol,(350,25))
         pygame.display.update()
