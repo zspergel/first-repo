@@ -148,18 +148,16 @@ class piece():
         attackrecap=False
         if self.name=='bomb':
             bombtxt=font.render('bombs cant move',True,blue)
-            screen.blit(bombtxt,(475,25))
+            screen.blit(bombtxt,(25,65))
             pygame.display.update()
             pygame.time.wait(600)
-            turn_board()
-            select_piece()
+            piece_select()
         if self.name=='flag':
             flagtxt=font.render('the flag cant move',True,blue)
-            screen.blit(flagtxt,(475,25))
+            screen.blit(flagtxt,(25,65))
             pygame.display.update()
             pygame.time.wait(600)
-            turn_board()
-            select_piece()
+            piece_select()
         if 1==1:
             turn_board()
             move=font.render('move or press x to select a different piece',True,blue)
