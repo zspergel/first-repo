@@ -40,13 +40,13 @@ class piece():
             self.move()
             #if the piece moved into is form the same player. prints it on board
             #then updates and waits .6s
-        if enemy.name=='bomb' and self.name=='miner':
+        elif enemy.name=='bomb' and self.name=='miner':
             enemy.strength-=20
         #if the enemy is the bomb reduces its strenth so miner will win
-        if enemy.name=='marshall' and self.name=='spy':
+        elif enemy.name=='marshall' and self.name=='spy':
             enemy.strength-=20
         #dito for above just with marhsall and spy
-        if self.strength>=enemy.strength:
+        elif self.strength>=enemy.strength:
             attackrecap=True
             if enemy.name=='flag':
                 screen.fill((255,255,255))
@@ -79,7 +79,7 @@ class piece():
             enemy.line=0
             enemy.spot=0
             self.location()
-        if self.strength<enemy.strength:
+        elif self.strength<enemy.strength:
             attackrecap=True
             loss=font.render(f'you lost. Your {self.name} was defeated by a {enemy.name}',True,blue)
             screen.blit(loss,(25,65))
@@ -116,7 +116,7 @@ class piece():
                 screen.blit(n,(300,25))
                 pygame.display.update()
                 if event.type==pygame.KEYDOWN:
-                    if event.key==pygame.K_RETURN:
+                    if event.key==pygame.K_RETURN and ro.isnumeric()==True:
                         row=int(ro)
                         running=False
                 #when enter is pressed exits section
@@ -125,6 +125,7 @@ class piece():
             screen.blit(toobig,(25,65))
             pygame.display.update()
             pygame.time.wait(600)
+            turn_board()
             row_columngen()
             #if the typed is bigger than 10 reruns piece selection
         selcol=font.render(f'Select column of {self.name}',True,blue)
@@ -144,7 +145,7 @@ class piece():
                 screen.blit(n,(625,25))
                 pygame.display.update()
                 if event.type==pygame.KEYDOWN:
-                    if event.key==pygame.K_RETURN:
+                    if event.key==pygame.K_RETURN and ro.isnumeric()==True:
                         column=int(ro)
                         running=False
         if column>10:
@@ -152,6 +153,7 @@ class piece():
             screen.blit(toobig,(25,65))
             pygame.display.update()
             pygame.time.wait(600)
+            turn_board()
             row_columngen()
         #same as above but for the column
         turn_board()
@@ -193,7 +195,7 @@ class piece():
                     screen.blit(n,(625,25))
                     pygame.display.update()
                     if event.type==pygame.KEYDOWN:
-                        if event.key==pygame.K_RETURN:
+                        if event.key==pygame.K_RETURN and ro.isnumeric()==True:
                             if len(ro)==1:
                                 move=str(ro)
                                 running=False
@@ -206,8 +208,11 @@ class piece():
             self.move()
             #if the pressed key is not w,a,s,d, or x reruns the move function
         if move=='x':
+            print(playernum)
             turn_board()
+            print(playernum)
             select_piece()
+            print(playernum)
             #if x is pressed lets yous select new piece
         if move=='s':
             for i in lines:
@@ -368,8 +373,6 @@ class piece():
 
 
 def turn_board():
-    for i in lines:
-        print(i)
     '''puts the board on the screen with hidden pieces based on turns'''
     global playernum
     if playernum>=3:
@@ -454,7 +457,9 @@ def select_piece():
     row_columngen()
     for i in lines:
         if row==i[0]:
-            if i[column]=='-' or i[column]=='0' or i[column]=='X':
+            if i[column]=='x':
+                print('solved')
+            if i[column]=='-' or i[column]==0 or i[column]=='X':
                 notpiece=font.render('that is not a piece',True,blue)
                 screen.blit(notpiece,(25,65))
                 pygame.display.update()
@@ -462,7 +467,7 @@ def select_piece():
                 turn_board()
                 select_piece()
                 #if the selected piece is not a piece then tells player
-    if playernum==1:
+    if playernum==1:4
         for n in pieces1:
             if n.line==row and n.spot==column:
                 selected=font.render(f'You have selected the {n.name} on {column},{row}',True,blue)
@@ -475,7 +480,7 @@ def select_piece():
                 playernum+=1
                 #finds the name of piece and tells player
                 #then mlets the player move the piece and prints new board
-    if playernum==2:
+    elif playernum==2:
         for n in pieces2:
             if n.line==row and n.spot==column:
                 selected=font.render(f'You have selected the {n.name} on {column},{row}',True,blue)
@@ -648,7 +653,7 @@ def row_columngen():
                 screen.blit(n,(300,25))
                 pygame.display.update()
                 if event.type==pygame.KEYDOWN:
-                    if event.key==pygame.K_RETURN:
+                    if event.key==pygame.K_RETURN and ro.isnumeric()==True::
                         row=int(ro)
                         running=False
                 #once enter is pressed saves ro to 'row'
@@ -678,9 +683,9 @@ def row_columngen():
                 screen.blit(n,(625,25))
                 pygame.display.update()
                 if event.type==pygame.KEYDOWN:
-                    if event.key==pygame.K_RETURN:
-                            column=int(ro)
-                            running=False
+                    if event.key==pygame.K_RETURN and ro.isnumeric()==True:
+                        column=int(ro)
+                        running=False
         if column>10:
             toobig=font.render('You cant select a column greater than 10',True,blue)
             screen.blit(toobig,(25,65))
@@ -691,3 +696,14 @@ def row_columngen():
             row_columngen()
         
 main_loop()
+#deselecting pieces INCORRECT
+#moving into own piece XXXXXX
+#selecting other piece
+#selecting nothign XXXXXXX
+#selecting lake INCORRECT
+#selecting not moving piece XXXXX
+#miner vs bomb
+#spy vs marshall
+#capturing flag
+#selecting too big numberXXXXX
+#recapXXXXXX
