@@ -127,6 +127,7 @@ class piece():
             pygame.time.wait(600)
             turn_board()
             row_columngen()
+            return
             #if the typed is bigger than 10 reruns piece selection
         selcol=font.render(f'Select column of {self.name}',True,blue)
         screen.blit(selcol,(350,25))
@@ -155,6 +156,7 @@ class piece():
             pygame.time.wait(600)
             turn_board()
             row_columngen()
+            return
         #same as above but for the column
         turn_board()
         #reprints the board
@@ -207,14 +209,11 @@ class piece():
             pygame.time.wait(600)
             self.move()
             #if the pressed key is not w,a,s,d, or x reruns the move function
-        if move=='x':
-            print(playernum)
+        elif move=='x':
             turn_board()
-            print(playernum)
             select_piece()
-            print(playernum)
             #if x is pressed lets yous select new piece
-        if move=='s':
+        elif move=='s':
             for i in lines:
                 if (self.line+1)==i[0]:
                     if i[self.spot]=='-':
@@ -244,7 +243,7 @@ class piece():
                             if x.line==i[0] and x.spot==self.spot:
                                 self.attack(x)
                                 #if none of the others is true attacks the piece
-        if move=='w':
+        elif move=='w':
             #next three scetions are all the same ust different directions
             for i in lines:
                 if (self.line-1)==i[0]:
@@ -274,7 +273,7 @@ class piece():
                         for x in piecesall:
                             if x.line==i[0] and x.spot==self.spot:
                                 self.attack(x)
-        if move=='a':
+        elif move=='a':
             for i in lines:
                 if (self.line)==i[0]:
                     if i[self.spot-1]=='-':
@@ -298,7 +297,7 @@ class piece():
                             n=self.spot-1
                             if x.line==self.line and x.spot==n:
                                 self.attack(x)
-        if move=='d':
+        elif move=='d':
             for i in lines:
                 if (self.line)==i[0]:
                     if i[self.spot+1]=='-':
@@ -467,7 +466,7 @@ def select_piece():
                 turn_board()
                 select_piece()
                 #if the selected piece is not a piece then tells player
-    if playernum==1:4
+    if playernum==1:
         for n in pieces1:
             if n.line==row and n.spot==column:
                 selected=font.render(f'You have selected the {n.name} on {column},{row}',True,blue)
@@ -653,7 +652,7 @@ def row_columngen():
                 screen.blit(n,(300,25))
                 pygame.display.update()
                 if event.type==pygame.KEYDOWN:
-                    if event.key==pygame.K_RETURN and ro.isnumeric()==True::
+                    if event.key==pygame.K_RETURN and ro.isnumeric()==True:
                         row=int(ro)
                         running=False
                 #once enter is pressed saves ro to 'row'
@@ -664,6 +663,7 @@ def row_columngen():
             pygame.time.wait(600)
             turn_board()
             row_columngen()
+            return
             #if row is bigger than 10 then reruns code
         selcol=font.render(f'Select column of piece',True,blue)
         screen.blit(selcol,(350,25))
@@ -694,6 +694,7 @@ def row_columngen():
             turn_board()
             pygame.display.update()
             row_columngen()
+            return
         
 main_loop()
 #deselecting pieces INCORRECT
