@@ -13,7 +13,6 @@ line8=[8,'-','-','-','-','-','-','-','-','-','-']
 line9=[9,'-','-','-','-','-','-','-','-','-','-']
 line10=[10,'-','-','-','-','-','-','-','-','-','-']
 lines=[line1,line2,line3,line4,line5,line6,line7,line8,line9,line10]
-#all the lines named with the lakes
 move='-'
 recap=''
 attackrecap=True
@@ -27,7 +26,6 @@ class piece():
         self.line=line
         self.spot=spot
         self.player=player
-        #initiates all the variables for the class
     def attack(self,enemy):
         '''attacks a piece that has been moved into'''
         global recap
@@ -38,6 +36,7 @@ class piece():
             pygame.display.update()
             pygame.time.wait(600)
             self.move()
+<<<<<<< HEAD
             #if the piece moved into is form the same player. prints it on board
             #then updates and waits .6s
         elif enemy.name=='bomb' and self.name=='miner':
@@ -47,13 +46,19 @@ class piece():
             enemy.strength-=20
         #dito for above just with marhsall and spy
         elif self.strength>=enemy.strength:
+=======
+        if enemy.name=='bomb' and self.name=='miner':
+            enemy.strength-=20
+        if enemy.name=='marshall' and self.name=='spy':
+            enemy.strength-=20
+        if self.strength>=enemy.strength:
+>>>>>>> parent of 6641c58... added comments
             attackrecap=True
             if enemy.name=='flag':
                 screen.fill((255,255,255))
                 win=font.render('you captured the flag and won the game',True,green)
                 screen.blit(win,(200,200))
                 pygame.display.update()
-                #blits winning message to screen
                 running=True
                 while running:
                     for event in pygame.event.get():
@@ -61,21 +66,17 @@ class piece():
                             running=False
                             pygame.quit()
                             quit()
-                    #allows you to exit code
+    
             victory=font.render(f'You win. your {self.name} defeated a {enemy.name}',True,blue)
             screen.blit(victory,(25,65))
             pygame.display.update()
             pygame.time.wait(750)
-            #if it is isn't the flag print that you won and the name of the piece you defeated
             recap=f'You lost. your {enemy.name} was defeated by a {self.name}'
-            #recap for other persons turn
             for i in lines:
                 if i[0]==self.line:
                     i[self.spot]='-'
-            #makes your old spot a dash
             self.line=enemy.line
             self.spot=enemy.spot
-            #moves you into your enemies spot
             enemy.line=0
             enemy.spot=0
             self.location()
@@ -85,7 +86,6 @@ class piece():
             screen.blit(loss,(25,65))
             pygame.display.update()
             pygame.time.wait(750)
-            #blits loss text to screen
             recap=f'You won. Your {enemy.name} defeated a {self.name}'
             for i in lines:
                 if (self.line)==i[0]:
@@ -108,7 +108,6 @@ class piece():
                 if event.type==pygame.KEYDOWN and len(ro)<2:
                     if str(pygame.key.name(event.key)).isnumeric()==True:
                         ro+=pygame.key.name(event.key)
-                        #adds the keys that is typed to string ro assuming the typed is a number
                 if event.type==pygame.QUIT:
                     running=False
                     
@@ -119,7 +118,6 @@ class piece():
                     if event.key==pygame.K_RETURN and ro.isnumeric()==True:
                         row=int(ro)
                         running=False
-                #when enter is pressed exits section
         if row>10:
             toobig=font.render('You cant select a row greater than 10',True,blue)
             screen.blit(toobig,(25,65))
@@ -127,8 +125,11 @@ class piece():
             pygame.time.wait(600)
             turn_board()
             row_columngen()
+<<<<<<< HEAD
             return
             #if the typed is bigger than 10 reruns piece selection
+=======
+>>>>>>> parent of 6641c58... added comments
         selcol=font.render(f'Select column of {self.name}',True,blue)
         screen.blit(selcol,(350,25))
         pygame.display.update()
@@ -156,10 +157,13 @@ class piece():
             pygame.time.wait(600)
             turn_board()
             row_columngen()
+<<<<<<< HEAD
             return
         #same as above but for the column
+=======
+>>>>>>> parent of 6641c58... added comments
         turn_board()
-        #reprints the board
+
 
     def move(self):
         '''lets player move'''
@@ -171,7 +175,6 @@ class piece():
             pygame.time.wait(600)
             turn_board()
             select_piece()
-            #if you select the bomb reruns selection
         if self.name=='flag':
             flagtxt=font.render('the flag cant move',True,blue)
             screen.blit(flagtxt,(475,25))
@@ -179,7 +182,6 @@ class piece():
             pygame.time.wait(600)
             turn_board()
             select_piece()
-            #same as above but for flag
         if 1==1:
             turn_board()
             move=font.render('move or press x to select a different piece',True,blue)
@@ -201,6 +203,7 @@ class piece():
                             if len(ro)==1:
                                 move=str(ro)
                                 running=False
+<<<<<<< HEAD
         #gets the users input and returns it as a string called move
         if move!='x' and move!='s' and move!='w' and move!='a' and move!='d':
             notmove=font.render('that is not W,A,S,D, or X. Only those are keys.',True,blue)
@@ -214,6 +217,12 @@ class piece():
             select_piece()
             #if x is pressed lets yous select new piece
         elif move=='s':
+=======
+        if move=='x':
+            turn_board()
+            select_piece()
+        if move=='s':
+>>>>>>> parent of 6641c58... added comments
             for i in lines:
                 if (self.line+1)==i[0]:
                     if i[self.spot]=='-':
@@ -224,27 +233,28 @@ class piece():
                             i[self.spot]='B'
                         elif self.name=='spy':
                             i[self.spot]='S'
-                        # prints out the correct letter for special pieces
                         for x in lines:
                           if x[0]==self.line:
                             x[self.spot]='-'
                             self.line+=1
                             return
-                            #if the spot is empty moves piece
                     elif i[self.spot]==0:
                         laketxt=font.render('that is the lake',True,blue)
                         screen.blit(laketxt,(25,65))
                         pygame.display.update()
                         pygame.time.wait(600)
                         self.move()
-                        #if tries to mvoe intot e lakes tells user and reruns move code
                     else:
                         for x in piecesall:
                             if x.line==i[0] and x.spot==self.spot:
                                 self.attack(x)
+<<<<<<< HEAD
                                 #if none of the others is true attacks the piece
         elif move=='w':
             #next three scetions are all the same ust different directions
+=======
+        if move=='w':
+>>>>>>> parent of 6641c58... added comments
             for i in lines:
                 if (self.line-1)==i[0]:
                     if i[self.spot]=='-':
@@ -338,7 +348,6 @@ class piece():
                     i[self.spot]='B'
                 elif self.name=='spy':
                     i[self.spot]='S'
-    #locates each piece and puts it onto board
     def select_loc(self):
         '''lets the player put the pieces onto the board'''
         global column
@@ -349,8 +358,6 @@ class piece():
             pygame.display.update()
             pygame.time.wait(600)
             self.select_loc()
-            #players can only put pieces in their first four rows
-            #this and next group check for that
         if playernum==2 and row>4:
             topfour=font.render('you must put your pieces in the bottom four rows',True,blue)
             screen.blit(topfour(25,65))
@@ -363,14 +370,29 @@ class piece():
         for i in lines:
             if i[0]==row:
                 if i[column]!='-':
-                    filled=font.render('that space is filled',True,blue)
+                    filled=font.render=('that space is filled',True,blue)
                     screen.blit(filled,(25,65))
                     pygame.display.update()
                     pygame.time.wait(600)
                     self.select_loc()
-                    #if their is already a piece tells player and reruns code
 
 
+def board():
+    '''puts the board on the screen'''
+    screen.fill((255,255,255))
+    for i in range(11):
+        pygame.draw.line(screen,blue,(100+50*i,100),(100+50*i,600))
+        pygame.draw.line(screen,blue,(100,100+50*i),(600,100+50*i))
+    z=0
+    
+    for line in lines:
+        n=0
+        for i in line:
+            linetxt=font.render(str(i),True,blue)
+            screen.blit(linetxt,(65+50*n,120+50*z))
+            n+=1
+        z+=1
+        pygame.display.update()
 def turn_board():
     '''puts the board on the screen with hidden pieces based on turns'''
     global playernum
@@ -378,12 +400,10 @@ def turn_board():
         playernum=2
     if playernum<=0:
         playernum=1
-    #error checks the player number
     screen.fill((255,255,255))
     for i in range(11):
-        pygame.draw.line(screen,blue,(100+50*i,150),(100+50*i,650))
-        pygame.draw.line(screen,blue,(100,150+50*i),(600,150+50*i))
-    #puts lines onto screen
+        pygame.draw.line(screen,blue,(100+50*i,100),(100+50*i,600))
+        pygame.draw.line(screen,blue,(100,100+50*i),(600,100+50*i))
     n=0
     z=0
     for L in lines:
@@ -394,7 +414,6 @@ def turn_board():
             Spot+=1
             if strung=='0' or strung=='-':
                 linelist.append(strung)
-                #if the item is the lake or a dash puts onto new list
             else:
                 for i in piecesall:
                     if i.line==L[0]:
@@ -403,23 +422,19 @@ def turn_board():
                                 linelist.append(strung)
                             else:
                                 linelist.append('X')
-                                #checks to find them item i piecesall
-                                #then if the player number is the same puts its strength otherwise puts an X
         n=0
         for i in linelist:
             linetxt=font.render(str(i),True,blue)
-            screen.blit(linetxt,(115+50*n,170+50*z))
+            screen.blit(linetxt,(115+50*n,120+50*z))
             n+=1
-            #puts each line of pieces onto screen
         z+=1
         num=[1,2,3,4,5,6,7,8,9,10]
         for i in num:
             number=font.render(str(i),True,blue)
-            screen.blit(number,(65+50*i,120))
+            screen.blit(number,(65+50*i,70))
         for n in num:
             number=font.render(str(n),True,blue)
-            screen.blit(number,(65,120+50*n))
-        #puts the row and column markers onto screen
+            screen.blit(number,(65,70+50*n))
     pygame.display.update()
 
 
@@ -432,9 +447,6 @@ def board_create():
             i.select_loc()
             i.location()
             turn_board()
-            #for each piece gets the user location
-            #puts the piece on board
-            #prints the board onto the screen
         playernum+=1
         turn_board()
         if playernum==2:
@@ -442,7 +454,6 @@ def board_create():
                 i.select_loc()
                 i.location()
                 turn_board()
-        #process is repeated
         playernum-=1
         turn_board()
 
@@ -465,7 +476,6 @@ def select_piece():
                 pygame.time.wait(750)
                 turn_board()
                 select_piece()
-                #if the selected piece is not a piece then tells player
     if playernum==1:
         for n in pieces1:
             if n.line==row and n.spot==column:
@@ -477,9 +487,13 @@ def select_piece():
                 n.move()
                 turn_board()
                 playernum+=1
+<<<<<<< HEAD
                 #finds the name of piece and tells player
                 #then mlets the player move the piece and prints new board
     elif playernum==2:
+=======
+    if playernum==2:
+>>>>>>> parent of 6641c58... added comments
         for n in pieces2:
             if n.line==row and n.spot==column:
                 selected=font.render(f'You have selected the {n.name} on {column},{row}',True,blue)
@@ -490,7 +504,7 @@ def select_piece():
                 n.move()
                 turn_board()
                 playernum-=1
-                #same as above
+
 '''begin piece def'''
 marshall=piece('marshall',10,1,0,0,1)
 general=piece('general',9,1,0,0,1)
@@ -532,7 +546,7 @@ bomb5=piece('bomb',20,1,0,0,1)
 flag=piece('flag',0,1,0,0,1)
 spy=piece('spy',1,1,0,0,1)
 '''end piece def'''
-#######list of all teh peices in the game
+
 """PLAYER 2 PIECES"""
 xmarshall=piece('marshall',10,1,0,0,2)
 xgeneral=piece('general',9,1,0,0,2)
@@ -576,7 +590,7 @@ xspy=piece('spy',1,1,0,0,2)
 #pieces1=[marshall,general,colonel1,colonel2,major1,major2,major3,captain1,captain2,captain3,captain4,lieutenant1,lieutenant2,lieutenant3,lieutenant4,sergeant1,sergeant2,sergeant3,sergeant4,miner1,miner2,miner3,miner4,miner5,scout1,scout2,scout3,scout4,scout5,scout6,scout7,scout8,bomb1,bomb2,bomb3,bomb4,bomb5,flag,spy]
 #pieces2=[xmarshall,xgeneral,xcolonel1,xcolonel2,xmajor1,xmajor2,xmajor3,xcaptain1,xcaptain2,xcaptain3,xcaptain4,xlieutenant1,xlieutenant2,xlieutenant3,xlieutenant4,xsergeant1,xsergeant2,xsergeant3,xsergeant4,xminer1,xminer2,xminer3,xminer4,xminer5,xscout1,xscout2,xscout3,xscout4,xscout5,xscout6,xscout7,xscout8,xbomb1,xbomb2,xbomb3,xbomb4,xbomb5,xflag,xspy]
 piecesall=[marshall,general,colonel1,colonel2,major1,major2,major3,captain1,captain2,captain3,captain4,lieutenant1,lieutenant2,lieutenant3,lieutenant4,sergeant1,sergeant2,sergeant3,sergeant4,miner1,miner2,miner3,miner4,miner5,scout1,scout2,scout3,scout4,scout5,scout6,scout7,scout8,bomb1,bomb2,bomb3,bomb4,bomb5,flag,spy,xmarshall,xgeneral,xcolonel1,xcolonel2,xmajor1,xmajor2,xmajor3,xcaptain1,xcaptain2,xcaptain3,xcaptain4,xlieutenant1,xlieutenant2,xlieutenant3,xlieutenant4,xsergeant1,xsergeant2,xsergeant3,xsergeant4,xminer1,xminer2,xminer3,xminer4,xminer5,xscout1,xscout2,xscout3,xscout4,xscout5,xscout6,xscout7,xscout8,xbomb1,xbomb2,xbomb3,xbomb4,xbomb5,xflag,xspy]
-#lists of pieces
+
 
 pieces1=[marshall,general]
 pieces2=[xmarshall,xgeneral,xflag]
@@ -589,7 +603,6 @@ blue=(0,0,255)
 red=(255,0,0)
 green=(0,255,0)
 font=pygame.font.SysFont('comisansms',30)
-#inits the colors,screen, and font
 def main_loop():
     '''main loop for the game'''
     global playernum
@@ -601,9 +614,10 @@ def main_loop():
         for event in pygame.event.get():
             if event.type==QUIT:
                 running=False
+            if event.type==pygame.KEYDOWN:
+                n=pygame.key.name(event.key)
         turn_board()
         board_create()
-        #creates the board
         while True:
             select_piece()
             change=True
@@ -616,8 +630,6 @@ def main_loop():
                     if event.type==pygame.KEYDOWN:
                         if event.key==K_RETURN:
                             change=False
-                            #puts a white screen with just above words
-                            #then after enter changes the player and prints new board
             turn_board()
             if attackrecap==True:
                 rec=font.render(recap,True,blue)
@@ -628,7 +640,6 @@ def main_loop():
                 playernum=2
             if playernum<=0:
                 playernum=1
-                #error checks player number agian
 def row_columngen():
         '''gets the row and column for pieces to be placed on board'''
         global row
@@ -638,13 +649,11 @@ def row_columngen():
         pygame.display.update()
         running=True
         ro=''
-        #blits first question to screen
         while running:
             for event in pygame.event.get():
                 if event.type==pygame.KEYDOWN and len(ro)<2:
                     if str(pygame.key.name(event.key)).isnumeric()==True:
                         ro+=pygame.key.name(event.key)
-                        #if the pressed key is a numebr adds it to 'ro'
                 if event.type==pygame.QUIT:
                     running=False
                     
@@ -655,22 +664,22 @@ def row_columngen():
                     if event.key==pygame.K_RETURN and ro.isnumeric()==True:
                         row=int(ro)
                         running=False
-                #once enter is pressed saves ro to 'row'
         if row>10:
             toobig=font.render('You cant select a row greater than 10',True,blue)
             screen.blit(toobig,(25,65))
             pygame.display.update()
             pygame.time.wait(600)
-            turn_board()
             row_columngen()
+<<<<<<< HEAD
             return
             #if row is bigger than 10 then reruns code
+=======
+>>>>>>> parent of 6641c58... added comments
         selcol=font.render(f'Select column of piece',True,blue)
         screen.blit(selcol,(350,25))
         pygame.display.update()
         running=True
         ro=''
-        #explained above
         while running:
             for event in pygame.event.get():
                 if event.type==pygame.KEYDOWN and len(ro)<2:
@@ -691,8 +700,6 @@ def row_columngen():
             screen.blit(toobig,(25,65))
             pygame.display.update()
             pygame.time.wait(600)
-            turn_board()
-            pygame.display.update()
             row_columngen()
             return
         
