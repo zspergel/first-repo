@@ -197,7 +197,7 @@ class piece():
                     screen.blit(n,(625,25))
                     pygame.display.update()
                     if event.type==pygame.KEYDOWN:
-                        if event.key==pygame.K_RETURN and ro.isnumeric()==True:
+                        if event.key==pygame.K_RETURN:
                             if len(ro)==1:
                                 move=str(ro)
                                 running=False
@@ -456,8 +456,6 @@ def select_piece():
     row_columngen()
     for i in lines:
         if row==i[0]:
-            if i[column]=='x':
-                print('solved')
             if i[column]=='-' or i[column]==0 or i[column]=='X':
                 notpiece=font.render('that is not a piece',True,blue)
                 screen.blit(notpiece,(25,65))
@@ -467,13 +465,19 @@ def select_piece():
                 select_piece()
                 #if the selected piece is not a piece then tells player
     if playernum==1:
+        some=font.render('hi',True,blue)
+        screen.blit(some,(100,100))
+        pygame.display.update()
+        pygame.time.wait(600)
         for n in pieces1:
             if n.line==row and n.spot==column:
-                selected=font.render(f'You have selected the {n.name} on {column},{row}',True,blue)
-                turn_board()
-                screen.blit(selected,(25,25))
+                screen.fill((0,0,0))
+                selected=font.render((f'You have selected the {n.name} on {column},{row}'),True,(0,0,0))
+                screen.blit(selected,(25,65))
+                print('hello')
                 pygame.display.update()
-                pygame.time.wait(1000)
+                #turn_board()
+                #pygame.time.wait(1000)
                 n.move()
                 turn_board()
                 playernum+=1
@@ -603,7 +607,18 @@ def main_loop():
                 running=False
         turn_board()
         board_create()
+        change=True
+        while change==True:
+            screen.fill((255,255,255))
+            playerchange=font.render('Change the player. press enter to continue',True,blue)
+            screen.blit(playerchange,(25,25))
+            pygame.display.update()
+            for event in pygame.event.get():
+                if event.type==pygame.KEYDOWN:
+                    if event.key==K_RETURN:
+                        change=False
         #creates the board
+        turn_board()
         while True:
             select_piece()
             change=True
