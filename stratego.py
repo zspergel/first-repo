@@ -1,7 +1,8 @@
 import pygame
 from pygame.locals import *
+import time
 playernum=1
-
+clock=pygame.time.Clock()
 line1=[1,'-','-','-','-','-','-','-','-','-','-']
 line2=[2,'-','-','-','-','-','-','-','-','-','-']
 line3=[3,'-','-','-','-','-','-','-','-','-','-']
@@ -16,7 +17,15 @@ lines=[line1,line2,line3,line4,line5,line6,line7,line8,line9,line10]
 #all the lines named with the lakes
 move='-'
 recap=''
-attackrecap=True
+attackrecap=False
+def enter():
+    running=True
+    '''enter return exits loop'''
+    while running:
+        for event in pygame.event.get():
+            if event.type==pygame.KEYDOWN:
+                if event.key==pygame.K_RETURN:
+                    running=False
 class piece():
     '''generic class for all pieces'''
     def __init__(self,name,strength,speed,line,spot,player):
@@ -32,11 +41,12 @@ class piece():
         '''attacks a piece that has been moved into'''
         global recap
         global attackrecap
+        attackrecap=False
         if self.player==enemy.player:
-            selfattack=font.render('You cant attack yourself',True,blue)
+            selfattack=font.render('You cant attack yourself. Press enter to continue',True,blue)
             screen.blit(selfattack,(25,65))
             pygame.display.update()
-            pygame.time.wait(600)
+            enter()
             self.move()
             #if the piece moved into is form the same player. prints it on board
             #then updates and waits .6s
@@ -62,10 +72,10 @@ class piece():
                             pygame.quit()
                             quit()
                     #allows you to exit code
-            victory=font.render(f'You win. your {self.name} defeated a {enemy.name}',True,blue)
+            victory=font.render(f'You win. your {self.name} defeated a {enemy.name}. Press enter to continue',True,blue)
             screen.blit(victory,(25,65))
             pygame.display.update()
-            pygame.time.wait(750)
+            enter()
             #if it is isn't the flag print that you won and the name of the piece you defeated
             recap=f'You lost. your {enemy.name} was defeated by a {self.name}'
             #recap for other persons turn
@@ -81,10 +91,10 @@ class piece():
             self.location()
         elif self.strength<enemy.strength:
             attackrecap=True
-            loss=font.render(f'you lost. Your {self.name} was defeated by a {enemy.name}',True,blue)
+            loss=font.render(f'you lost. Your {self.name} was defeated by a {enemy.name}.Press enter to continue',True,blue)
             screen.blit(loss,(25,65))
             pygame.display.update()
-            pygame.time.wait(750)
+            enter()
             #blits loss text to screen
             recap=f'You won. Your {enemy.name} defeated a {self.name}'
             for i in lines:
@@ -124,7 +134,7 @@ class piece():
             toobig=font.render('You cant select a row greater than 10',True,blue)
             screen.blit(toobig,(25,65))
             pygame.display.update()
-            pygame.time.wait(600)
+            enter()
             turn_board()
             row_columngen()
             return
@@ -153,7 +163,7 @@ class piece():
             toobig=font.render('You cant select a column greater than 10',True,blue)
             screen.blit(toobig,(25,65))
             pygame.display.update()
-            pygame.time.wait(600)
+            enter()
             turn_board()
             row_columngen()
             return
@@ -168,7 +178,7 @@ class piece():
             bombtxt=font.render('bombs cant move',True,blue)
             screen.blit(bombtxt,(475,25))
             pygame.display.update()
-            pygame.time.wait(600)
+            enter()
             turn_board()
             select_piece()
             #if you select the bomb reruns selection
@@ -176,7 +186,7 @@ class piece():
             flagtxt=font.render('the flag cant move',True,blue)
             screen.blit(flagtxt,(475,25))
             pygame.display.update()
-            pygame.time.wait(600)
+            enter()
             turn_board()
             select_piece()
             #same as above but for flag
@@ -206,7 +216,7 @@ class piece():
             notmove=font.render('that is not W,A,S,D, or X. Only those are keys.',True,blue)
             screen.blit(notmove,(25,65))
             pygame.display.update()
-            pygame.time.wait(600)
+            enter()
             self.move()
             #if the pressed key is not w,a,s,d, or x reruns the move function
         elif move=='x':
@@ -235,7 +245,7 @@ class piece():
                         laketxt=font.render('that is the lake',True,blue)
                         screen.blit(laketxt,(25,65))
                         pygame.display.update()
-                        pygame.time.wait(600)
+                        enter()
                         self.move()
                         #if tries to mvoe intot e lakes tells user and reruns move code
                     else:
@@ -266,7 +276,7 @@ class piece():
                         laketxt=font.render('that is the lake',True,blue)
                         screen.blit(laketxt,(25,65))
                         pygame.display.update()
-                        pygame.time.wait(600)                        
+                        enter()                        
                         self.move()
                     else:
                         n=i[0]+1
@@ -290,7 +300,7 @@ class piece():
                         laketxt=font.render('that is the lake',True,blue)
                         screen.blit(laketxt,(25,65))
                         pygame.display.update()
-                        pygame.time.wait(600)
+                        enter()
                         self.move()
                     else:
                         for x in piecesall:
@@ -314,7 +324,7 @@ class piece():
                         laketxt=font.render('that is the lake',True,blue)
                         screen.blit(laketxt,(25,65))
                         pygame.display.update()
-                        pygame.time.wait(600)
+                        enter()
                         self.move()
                     else:
                         for x in piecesall:
@@ -347,7 +357,7 @@ class piece():
             botfour=font.render('you must put your pieces in the bottom four rows',True,blue)
             screen.blit(botfour,(25,65))
             pygame.display.update()
-            pygame.time.wait(600)
+            enter()
             self.select_loc()
             #players can only put pieces in their first four rows
             #this and next group check for that
@@ -355,7 +365,7 @@ class piece():
             topfour=font.render('you must put your pieces in the bottom four rows',True,blue)
             screen.blit(topfour(25,65))
             pygame.display.update()
-            pygame.time.wait(600)
+            enter()
             self.select_loc()
         self.line=row
         column=int(column)
@@ -366,7 +376,7 @@ class piece():
                     filled=font.render('that space is filled',True,blue)
                     screen.blit(filled,(25,65))
                     pygame.display.update()
-                    pygame.time.wait(600)
+                    enter()
                     self.select_loc()
                     #if their is already a piece tells player and reruns code
 
@@ -460,37 +470,41 @@ def select_piece():
                 notpiece=font.render('that is not a piece',True,blue)
                 screen.blit(notpiece,(25,65))
                 pygame.display.update()
-                pygame.time.wait(750)
+                enter()
                 turn_board()
                 select_piece()
                 #if the selected piece is not a piece then tells player
+    
     if playernum==1:
-        some=font.render('hi',True,blue)
-        screen.blit(some,(100,100))
-        pygame.display.update()
-        pygame.time.wait(600)
+        #change back
         for n in pieces1:
             if n.line==row and n.spot==column:
-                screen.fill((0,0,0))
-                selected=font.render((f'You have selected the {n.name} on {column},{row}'),True,(0,0,0))
+                selected=font.render((f'You have selected the {n.name} on {column},{row}. Press enter to continue'),True,blue)
                 screen.blit(selected,(25,65))
-                print('hello')
                 pygame.display.update()
-                #turn_board()
-                #pygame.time.wait(1000)
+                run=True
+                while run:
+                    for event in pygame.event.get():
+                        if event.type==pygame.KEYDOWN:
+                            if event.key==K_RETURN:
+                                run=False
                 n.move()
                 turn_board()
                 playernum+=1
                 #finds the name of piece and tells player
                 #then mlets the player move the piece and prints new board
-    elif playernum==2:
+    if playernum==2:
         for n in pieces2:
             if n.line==row and n.spot==column:
-                selected=font.render(f'You have selected the {n.name} on {column},{row}',True,blue)
-                turn_board()
-                screen.blit(selected,(25,25))
+                selected=font.render((f'You have selected the {n.name} on {column},{row}. Press enter to continue'),True,blue)
+                screen.blit(selected,(25,65))
                 pygame.display.update()
-                pygame.time.wait(1000)
+                run=True
+                while run:
+                    for event in pygame.event.get():
+                        if event.type==pygame.KEYDOWN:
+                            if event.key==K_RETURN:
+                                run=False
                 n.move()
                 turn_board()
                 playernum-=1
@@ -635,10 +649,12 @@ def main_loop():
                             #then after enter changes the player and prints new board
             turn_board()
             if attackrecap==True:
+                print('recaped')
                 rec=font.render(recap,True,blue)
                 screen.blit(rec,(25,65))
                 pygame.display.update()
-                pygame.time.wait(750)
+                enter()
+                
             if playernum>=3:
                 playernum=2
             if playernum<=0:
@@ -675,7 +691,7 @@ def row_columngen():
             toobig=font.render('You cant select a row greater than 10',True,blue)
             screen.blit(toobig,(25,65))
             pygame.display.update()
-            pygame.time.wait(600)
+            enter()
             turn_board()
             row_columngen()
             return
@@ -705,7 +721,7 @@ def row_columngen():
             toobig=font.render('You cant select a column greater than 10',True,blue)
             screen.blit(toobig,(25,65))
             pygame.display.update()
-            pygame.time.wait(600)
+            enter()
             turn_board()
             pygame.display.update()
             row_columngen()
