@@ -591,13 +591,10 @@ xbomb4=piece('bomb',20,1,0,0,2)
 xbomb5=piece('bomb',20,1,0,0,2)
 xflag=piece('flag',0,1,0,0,2)
 xspy=piece('spy',1,1,0,0,2)
-#pieces1=[marshall,general,colonel1,colonel2,major1,major2,major3,captain1,captain2,captain3,captain4,lieutenant1,lieutenant2,lieutenant3,lieutenant4,sergeant1,sergeant2,sergeant3,sergeant4,miner1,miner2,miner3,miner4,miner5,scout1,scout2,scout3,scout4,scout5,scout6,scout7,scout8,bomb1,bomb2,bomb3,bomb4,bomb5,flag,spy]
-#pieces2=[xmarshall,xgeneral,xcolonel1,xcolonel2,xmajor1,xmajor2,xmajor3,xcaptain1,xcaptain2,xcaptain3,xcaptain4,xlieutenant1,xlieutenant2,xlieutenant3,xlieutenant4,xsergeant1,xsergeant2,xsergeant3,xsergeant4,xminer1,xminer2,xminer3,xminer4,xminer5,xscout1,xscout2,xscout3,xscout4,xscout5,xscout6,xscout7,xscout8,xbomb1,xbomb2,xbomb3,xbomb4,xbomb5,xflag,xspy]
+pieces1=[marshall,general,colonel1,colonel2,major1,major2,major3,captain1,captain2,captain3,captain4,lieutenant1,lieutenant2,lieutenant3,lieutenant4,sergeant1,sergeant2,sergeant3,sergeant4,miner1,miner2,miner3,miner4,miner5,scout1,scout2,scout3,scout4,scout5,scout6,scout7,scout8,bomb1,bomb2,bomb3,bomb4,bomb5,flag,spy]
+pieces2=[xmarshall,xgeneral,xcolonel1,xcolonel2,xmajor1,xmajor2,xmajor3,xcaptain1,xcaptain2,xcaptain3,xcaptain4,xlieutenant1,xlieutenant2,xlieutenant3,xlieutenant4,xsergeant1,xsergeant2,xsergeant3,xsergeant4,xminer1,xminer2,xminer3,xminer4,xminer5,xscout1,xscout2,xscout3,xscout4,xscout5,xscout6,xscout7,xscout8,xbomb1,xbomb2,xbomb3,xbomb4,xbomb5,xflag,xspy]
 piecesall=[marshall,general,colonel1,colonel2,major1,major2,major3,captain1,captain2,captain3,captain4,lieutenant1,lieutenant2,lieutenant3,lieutenant4,sergeant1,sergeant2,sergeant3,sergeant4,miner1,miner2,miner3,miner4,miner5,scout1,scout2,scout3,scout4,scout5,scout6,scout7,scout8,bomb1,bomb2,bomb3,bomb4,bomb5,flag,spy,xmarshall,xgeneral,xcolonel1,xcolonel2,xmajor1,xmajor2,xmajor3,xcaptain1,xcaptain2,xcaptain3,xcaptain4,xlieutenant1,xlieutenant2,xlieutenant3,xlieutenant4,xsergeant1,xsergeant2,xsergeant3,xsergeant4,xminer1,xminer2,xminer3,xminer4,xminer5,xscout1,xscout2,xscout3,xscout4,xscout5,xscout6,xscout7,xscout8,xbomb1,xbomb2,xbomb3,xbomb4,xbomb5,xflag,xspy]
 #lists of pieces
-
-pieces1=[marshall,general]
-pieces2=[xmarshall,xgeneral,xflag]
 
 """pygame code below here"""
 pygame.init()
@@ -615,6 +612,22 @@ def main_loop():
     global recap
     running=True
     screen.fill((255,255,255))
+    intro=font.render('Stratego is a strategy board game',True,blue)
+    intro2=font.render('Each player puts all of their pieces onto the board',True,blue)
+    intro3=font.render('Each turn you can move your pieces. If you move into an opponents piece ',True,blue)
+    intro4=font.render('the higher number wins. If the spy attacks the 10, spy wins. Miners can defuse',True,blue)
+    intro6=font.render(' bombs. Everyone else loses to bomb. Capture the flag to win.',True,blue)
+    intro7=font.render('you can only place pieces in your bottom 4 row. Thier are 2 lakes in the middle',True,blue)
+    intro5=font.render('press enter to continue',True,blue)
+    screen.blit(intro,(25,25))
+    screen.blit(intro2,(25,75))
+    screen.blit(intro3,(25,125))
+    screen.blit(intro4,(25,175))
+    screen.blit(intro6,(25,225))
+    screen.blit(intro7,(25,275))
+    screen.blit(intro5,(25,325))
+    pygame.display.update()
+    enter()
     while running:
         for event in pygame.event.get():
             if event.type==QUIT:
