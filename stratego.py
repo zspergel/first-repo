@@ -49,7 +49,7 @@ class piece():
             enter()
             self.move()
             #if the piece moved into is form the same player. prints it on board
-            #then updates and waits .6s
+            #then updates and waits
         elif enemy.name=='bomb' and self.name=='miner':
             enemy.strength-=20
         #if the enemy is the bomb reduces its strenth so miner will win
